@@ -1,4 +1,4 @@
-name: CUPS
+name: AirPrint Server
 version: "1.7"
 slug: cupsik
 description: A CUPS print server with working AirPrint
@@ -7,6 +7,7 @@ arch:
   - aarch64
 usb: true
 init: false
+panel_icon: mdi:printer
 homeassistant_api: true
 host_network: true
 ports:
