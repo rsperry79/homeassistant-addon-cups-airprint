@@ -19,4 +19,6 @@ ports_description:
 # ingress: false
 map:
   - addon_config:rw
-webui: "[PROTO:ssl]://[HOST]:[PORT:631]"
+ingress: true
+ingress_port: 631
+ingress_stream: true
