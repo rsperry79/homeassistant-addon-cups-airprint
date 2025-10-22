@@ -69,7 +69,7 @@ fi
 if [ -L "$avahi_cfg_path" ] && [ -d "$avahi_cfg_path" ]; then
   echo "$avahi_cfg_path is a valid symbolic link"
 else
-  rm "$avahi_cfg_path"
+  rm -rf "$avahi_cfg_path"
   ln -s "$avahi_cfg_path" "$real_avahi_path"
 fi
 
