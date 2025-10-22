@@ -1,5 +1,6 @@
-# homeassistant addon cups airprint
-CUPS addon with working Avahi in reflector mode 
+# homeassistant addon cups AirPrint
+
+CUPS addon with working Avahi in reflector mode
 
 Tested with Home Assistant version **2025.2.3**
 

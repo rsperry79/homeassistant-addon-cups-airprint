@@ -18,12 +18,9 @@ ports_description:
   631/udp: For other devices on the local network to print to this server
 # ingress: false
 map:
-  - type: addon_config
-    read_only: false
-    path: /etc/cups
   - type: ssl
     read_only: true
-    path: /etc/cups/ssl
+    path: /ssl
 
 ingress: true
 ingress_port: 631
