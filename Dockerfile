@@ -65,3 +65,4 @@ EXPOSE 631
 RUN chmod a+x /run.sh
 
 CMD ["/run.sh"]
+

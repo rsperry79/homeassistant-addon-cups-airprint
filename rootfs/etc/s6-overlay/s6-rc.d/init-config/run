@@ -79,3 +79,4 @@ fi
 if [ ! -e "$avahi_cfg_path/$avahi_daemon_cfg" ]; then
   cp "$templates_path/$avahi_daemon_cfg" "$avahi_cfg_path/$avahi_daemon_cfg"
 fi
+
