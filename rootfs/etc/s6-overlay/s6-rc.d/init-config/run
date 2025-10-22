@@ -44,14 +44,17 @@ fi
 
 if [ ! -e "$cups_cfg_path/$cups_client_cfg" ]; then
   cp "$templates_path/$cups_client_cfg" "$cups_cfg_path/$cups_client_cfg"
+  echo "Copied $cups_client_cfg"
 fi
 
 if [ ! -e "$cups_cfg_path/$cups_daemon_cfg" ]; then
   cp "$templates_path/$cups_daemon_cfg" "$cups_cfg_path/$cups_daemon_cfg"
+  echo "Copied $cups_daemon_cfg"
 fi
 
 if [ ! -e "$cups_cfg_path/$cups_files_cfg" ]; then
   cp "$templates_path/$cups_files_cfg" "$cups_cfg_path/$cups_files_cfg"
+  echo "Copied $cups_files_cfg"
 fi
 
 if [ -L "$cups_ssl_path" ] && [ -d "$cups_ssl_path" ]; then
