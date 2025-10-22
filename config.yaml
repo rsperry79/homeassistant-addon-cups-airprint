@@ -19,6 +19,10 @@ ports_description:
 # ingress: false
 map:
   - addon_config:rw
+  - type: ssl
+    read_only: false
+    path: /etc/cups/ssl
+
 ingress: true
 ingress_port: 631
 ingress_stream: true
