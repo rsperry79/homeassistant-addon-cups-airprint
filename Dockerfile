@@ -48,7 +48,6 @@ RUN cd /tmp \
   && apt install ./cnijfilter2_6.80-1.deb
 
 COPY rootfs /
-RUN chmod +x /etc/s6-overlay/s6-rc.d/init-config/run
 
 # Add user and disable sudo password checking
 RUN useradd \
