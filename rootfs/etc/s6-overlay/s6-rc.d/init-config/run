@@ -57,7 +57,7 @@ fi
 if [ -L "$cups_ssl_path" ] && [ -d "$cups_ssl_path" ]; then
   echo "$cups_ssl_path is a valid symbolic link"
 else
-  rm "$cups_ssl_path"
+  rm -f "$cups_ssl_path"
   ln -s "$cups_ssl_path" "$real_ssl_path"
 fi
 

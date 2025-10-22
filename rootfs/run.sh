@@ -6,10 +6,10 @@ until [ -e /var/run/avahi-daemon/socket ]; do
   sleep 1s
 done
 
-bashio::log.info "Preparing directories"
-if [ ! -d /config/cups ]; then cp -v -R /etc/cups /config; fi
-ln -v -s /config/cups /etc/cups
+# bashio::log.info "Preparing directories"
+# ps /etc/cups
+# if [ ! -d /config/cups ]; then cp -v -R /etc/cups /config; fi
+# ln -v -s /config/cu
+# bashio::log.info "Starting CUPS server as CMD from S6"
 
-bashio::log.info "Starting CUPS server as CMD from S6"
-
-cupsd -f
+# cupsd -f
