@@ -47,9 +47,6 @@ RUN cd /tmp \
   && mv cnijfilter2-6.80-1-deb/packages/cnijfilter2_6.80-1_${ARCH}.deb cnijfilter2_6.80-1.deb \
   && apt install ./cnijfilter2_6.80-1.deb
 
-# RUN gunzip linux-brprinter-installer-*.gz \
-# && bash linux-brprinter-installer*
-
 COPY rootfs /
 
 # Add user and disable sudo password checking
