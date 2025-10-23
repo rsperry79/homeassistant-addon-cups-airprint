@@ -8,10 +8,10 @@ readonly cups_ssl_path=/etc/cups/ssl
 readonly avahi_cfg_path=/etc/avahi
 
 # HA File paths
-readonly real_config_path=/config/airprint-server
-readonly real_cups_path=/config/airprint-server/cups
+readonly real_config_path=/data/airprint-server
+readonly real_cups_path=/data/airprint-server/cups
 readonly real_ssl_path=/ssl
-readonly real_avahi_path=/config/airprint-server/avahi
+readonly real_avahi_path=/data/airprint-server/avahi
 
 # CUPS paths
 
