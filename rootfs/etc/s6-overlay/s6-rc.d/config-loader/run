@@ -1,0 +1,84 @@
+#!/command/with-contend bashio
+
+# local file paths
+readonly templates_path=/templates
+readonly cups_cfg_path=/etc/cups
+readonly cups_ssl_path=/etc/cups/ssl
+readonly avahi_cfg_path=/etc/avahi
+
+# HA File paths
+readonly real_config_path=/data/cups
+readonly real_ssl_path=/ssl
+
+# CUPS paths
+readonly real_cups_path=/data/cups/cups
+readonly cups_client_cfg=client.conf
+readonly cups_daemon_cfg=cupsd.conf
+readonly cups_files_cfg=cups-files.conf
+
+# Avahi paths
+real_avahi_path='/data/cups/avahi'
+avahi_daemon_cfg='avahi-daemon.conf'
+
+if [ ! -d "$real_config_path" ]; then
+  mkdir -p "$real_config_path"
+fi
+
+# CUPS Files
+if [ ! -d "$real_cups_path" ]; then
+  mkdir -p "$real_cups_path"
+fi
+
+if [ -L "$cups_cfg_path" ] && [ -d "$cups_cfg_path" ]; then
+  bashio::log.debug "$cups_cfg_path is a valid symbolic link"
+else
+  if [ -L "$cups_cfg_path" ]; then
+    unlink "$cups_cfg_path"
+  else
+    rm -rf "$cups_cfg_path"
+  fi
+  ln -s "$cups_cfg_path" "$real_cups_path"
+fi
+
+if [ ! -e "$cups_cfg_path/$cups_client_cfg" ]; then
+  cp "$templates_path/$cups_client_cfg" "$cups_cfg_path/$cups_client_cfg"
+  bashio::log.debug "Copied $cups_client_cfg"
+fi
+
+if [ ! -e "$cups_cfg_path/$cups_daemon_cfg" ]; then
+  cp "$templates_path/$cups_daemon_cfg" "$cups_cfg_path/$cups_daemon_cfg"
+  bashio::log.debug "Copied $cups_daemon_cfg"
+fi
+
+if [ ! -e "$cups_cfg_path/$cups_files_cfg" ]; then
+  cp "$templates_path/$cups_files_cfg" "$cups_cfg_path/$cups_files_cfg"
+  bashio::log.debug "Copied $cups_files_cfg"
+fi
+
+if [ -L "$cups_ssl_path" ] && [ -d "$cups_ssl_path" ]; then
+  bashio::log.debug "$cups_ssl_path is a valid symbolic link"
+else
+  if [ -L "$cups_ssl_path" ]; then
+    unlink "$cups_ssl_path"
+  else
+    rm -rf "$cups_ssl_path"
+  fi
+  ln -s "$cups_ssl_path" "$real_ssl_path"
+fi
+
+# AVAHI Files
+if [ ! -d "$real_avahi_path" ]; then
+  mkdir -p "$real_avahi_path"
+fi
+
+if [ -L "$avahi_cfg_path" ] && [ -d "$avahi_cfg_path" ]; then
+  bashio::log.debug "$avahi_cfg_path is a valid symbolic link"
+else
+  rm -rf "$avahi_cfg_path"
+  ln -s "$avahi_cfg_path" "$real_avahi_path"
+fi
+
+if [ ! -e "$avahi_cfg_path/$avahi_daemon_cfg" ]; then
+  cp "$templates_path/$avahi_daemon_cfg" "$avahi_cfg_path/$avahi_daemon_cfg"
+fi
+
