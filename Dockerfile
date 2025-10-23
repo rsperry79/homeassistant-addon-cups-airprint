@@ -61,5 +61,5 @@ RUN useradd \
 # RUN chmod -R a+x /etc/s6-overlay/s6-rc.d  && chown root:root -R /etc/s6-overlay/s6-rc.d
 RUN chmod a+x /run.sh
 
-CMD ["/run.sh"]
-
+HEALTHCHECK \
+    CMD curl --fail http://127.0.0.1:631/ || exit 1
