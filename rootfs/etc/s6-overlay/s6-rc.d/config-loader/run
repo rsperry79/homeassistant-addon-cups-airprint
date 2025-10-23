@@ -8,10 +8,10 @@ readonly cups_ssl_path=/etc/cups/ssl
 readonly avahi_cfg_path=/etc/avahi
 
 # HA File paths
-readonly real_config_path=/data/airprint-server
-readonly real_cups_path=/data/airprint-server/cups
+readonly real_config_path=/config
+readonly real_cups_path=/config/cups
 readonly real_ssl_path=/ssl
-readonly real_avahi_path=/data/airprint-server/avahi
+readonly real_avahi_path=/config/avahi
 
 # CUPS paths
 
@@ -110,6 +110,12 @@ function init () {
   find /data/airprint-server/ -type f -print0 | while IFS= read -r -d '' file; do
     bashio::log.info "Detected data file: $file"
   done
+
+
+  find /config -type f -print0 | while IFS= read -r -d '' file; do
+    bashio::log.info "Detected data file: $file"
+  done
+
 
 }
 

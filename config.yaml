@@ -23,7 +23,10 @@ map:
     path: /ssl
   - type: addons
     read_only: false
-    path: /data
+    path: /addons
+  - type: addon_configs
+    read_only: false
+    path: /config
 ingress: true
 ingress_port: 631
 ingress_stream: true
