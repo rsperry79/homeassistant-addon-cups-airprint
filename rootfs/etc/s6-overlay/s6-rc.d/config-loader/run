@@ -86,8 +86,10 @@ function setup_avahi() {
   else
     if [ -L "$avahi_cfg_path" ]; then
       unlink "$avahi_cfg_path"
+      bashio::log.info "$avahi_cfg_path unlinked"
     else
       rm -rf "$avahi_cfg_path"
+        bashio::log.info "$avahi_cfg_path removed"
     fi
     ln -sn "$real_avahi_path" "$avahi_cfg_path"
   fi
