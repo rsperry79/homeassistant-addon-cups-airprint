@@ -1,6 +1,9 @@
 {
   "remote.SSH.remoteServerListenOnSocket": true,
-  "cSpell.ignorePaths": [".vscode", "~/.vscode-server/**/*"],
+  "cSpell.ignorePaths": [
+    ".vscode",
+    "~/.vscode-server/**/*"
+  ],
   "cSpell.words": [
     "airprint",
     "avahi",
@@ -36,6 +39,7 @@
     "remroot",
     "rootfs",
     "splix",
+    "tempfs",
     "whois",
     "Zajac"
   ],

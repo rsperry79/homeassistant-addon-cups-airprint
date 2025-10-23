@@ -111,8 +111,6 @@ function init () {
   find "$real_config_path" -type f -print0 | while IFS= read -r -d '' file; do
     bashio::log.info "Detected data file: $file"
   done
-
-
 }
 
 init
