@@ -45,7 +45,7 @@ else
     rm -rf "$cups_cfg_path"
   fi
 
-  ln  "$real_cups_path" "$cups_cfg_path"
+  ln -sn "$real_cups_path" "$cups_cfg_path"
   bashio::log.info "$cups_cfg_path linking"
 fi
 
@@ -72,7 +72,7 @@ else
   else
     rm -rf "$cups_ssl_path"
   fi
-  ln "$real_ssl_path" "$cups_ssl_path"
+  ln -sn  "$real_ssl_path" "$cups_ssl_path"
 fi
 
 # AVAHI Files
@@ -88,7 +88,7 @@ else
   else
     rm -rf "$avahi_cfg_path"
   fi
-  ln  "$real_avahi_path" "$avahi_cfg_path"
+  ln -sn "$real_avahi_path" "$avahi_cfg_path"
 fi
 
 if [ ! -e "$avahi_cfg_path/$avahi_daemon_cfg" ]; then
