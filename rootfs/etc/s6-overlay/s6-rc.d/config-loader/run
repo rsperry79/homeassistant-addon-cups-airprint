@@ -106,6 +106,21 @@ function init () {
   fi
   setup_cups
   setup_avahi
+
+
+  for file in /config/*; do
+    # print all the files (not directories) in the addons_config folder
+    if [ -f "$file" ]; then
+      echo "Detected config file: $file"
+    fi
+  done
+
+  for file in /data/*; do
+    # print all the files (not directories) in the addons_config folder
+    if [ -f "$file" ]; then
+      echo "Detected config file: $file"
+    fi
+  done
 }
 
 init
