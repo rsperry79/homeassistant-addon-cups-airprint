@@ -41,7 +41,11 @@ fi
 if [ -L "$cups_cfg_path" ] && [ -d "$cups_cfg_path" ]; then
   bashio::log.debug "$cups_cfg_path is a valid symbolic link"
 else
-  rm -rf "$cups_cfg_path"
+  if [ -L "$cups_cfg_path" ]; then
+    unlink "$cups_cfg_path"
+  else
+    rm -rf "$cups_cfg_path"
+  fi
   ln -s "$cups_cfg_path" "$real_cups_path"
 fi
 
@@ -63,7 +67,11 @@ fi
 if [ -L "$cups_ssl_path" ] && [ -d "$cups_ssl_path" ]; then
   bashio::log.debug "$cups_ssl_path is a valid symbolic link"
 else
-  rm -rf "$cups_ssl_path"
+  if [ -L "$cups_ssl_path" ]; then
+    unlink "$cups_ssl_path"
+  else
+    rm -rf "$cups_ssl_path"
+  fi
   ln -s "$cups_ssl_path" "$real_ssl_path"
 fi
 
