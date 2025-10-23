@@ -118,7 +118,14 @@ function init () {
   for file in /data/*; do
     # print all the files (not directories) in the addons_config folder
     if [ -f "$file" ]; then
-       bashio::log.info "Detected config file: $file"
+       bashio::log.info "Detected data file: $file"
+    fi
+  done
+
+  for file in /addons/*; do
+    # print all the files (not directories) in the addons_config folder
+    if [ -f "$file" ]; then
+       bashio::log.info "Detected addons file: $file"
     fi
   done
 }
