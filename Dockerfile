@@ -58,8 +58,7 @@ RUN useradd \
   --password=$(mkpasswd print) \
   print \
 && sed -i '/%sudo[[:space:]]/ s/ALL[[:space:]]*$/NOPASSWD:ALL/' /etc/sudoers
-
-EXPOSE 631
+RUN chmod -R +x /etc/s6-overlay/s6-rc.d
 
 RUN chmod a+x /run.sh
 
