@@ -33,14 +33,20 @@ if [ ! -d "$real_cups_path" ]; then
 fi
 
 if [ -L "$cups_cfg_path" ] && [ -d "$cups_cfg_path" ]; then
-  bashio::log.debug "$cups_cfg_path is a valid symbolic link"
+  bashio::log.info "$cups_cfg_path is a valid symbolic link"
 else
+  bashio::log.info "$cups_cfg_path is a not valid symbolic link"
+
   if [ -L "$cups_cfg_path" ]; then
+    bashio::log.info "$cups_cfg_path unlinking"
     unlink "$cups_cfg_path"
   else
+    bashio::log.info "$cups_cfg_path removing"
     rm -rf "$cups_cfg_path"
   fi
+
   ln -s  "$real_cups_path" "$cups_cfg_path"
+  bashio::log.info "$cups_cfg_path linking"
 fi
 
 if [ ! -e "$cups_cfg_path/$cups_client_cfg" ]; then
