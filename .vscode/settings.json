@@ -3,6 +3,7 @@
   "skipFiles": ["~/.vscode-server/**/*"],
   "cSpell.ignorePaths": [".vscode", "~/.vscode-server/**/*"],
   "cSpell.words": [
+    "airprint",
     "avahi",
     "bashio",
     "brlaser",

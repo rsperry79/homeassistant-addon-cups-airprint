@@ -8,18 +8,20 @@ readonly cups_ssl_path=/etc/cups/ssl
 readonly avahi_cfg_path=/etc/avahi
 
 # HA File paths
-readonly real_config_path=/data/cups
+readonly real_config_path=/data/airprint-server
+readonly real_cups_path=/data/airprint-server/cups
 readonly real_ssl_path=/ssl
+readonly real_avahi_path=/data/airprint-server/avahi
 
 # CUPS paths
-readonly real_cups_path=/data/cups/cups
+
 readonly cups_client_cfg=client.conf
 readonly cups_daemon_cfg=cupsd.conf
 readonly cups_files_cfg=cups-files.conf
 
 # Avahi paths
-real_avahi_path='/data/cups/avahi'
-avahi_daemon_cfg='avahi-daemon.conf'
+
+readonly avahi_daemon_cfg=avahi-daemon.conf
 
 if [ ! -d "$real_config_path" ]; then
   mkdir -p "$real_config_path"
@@ -75,7 +77,11 @@ fi
 if [ -L "$avahi_cfg_path" ] && [ -d "$avahi_cfg_path" ]; then
   bashio::log.debug "$avahi_cfg_path is a valid symbolic link"
 else
-  rm -rf "$avahi_cfg_path"
+  if [ -L "$avahi_cfg_path" ]; then
+    unlink "$avahi_cfg_path"
+  else
+    rm -rf "$avahi_cfg_path"
+  fi
   ln -s  "$real_avahi_path" "$avahi_cfg_path"
 fi
 
