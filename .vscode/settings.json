@@ -29,6 +29,7 @@
     "NOPASSWD",
     "oneshot",
     "openprinting",
+    "pipefail",
     "ppds",
     "Printcap",
     "procps",

@@ -59,7 +59,7 @@ RUN useradd \
   print \
 && sed -i '/%sudo[[:space:]]/ s/ALL[[:space:]]*$/NOPASSWD:ALL/' /etc/sudoers
 RUN chmod -R a+x /etc/s6-overlay/s6-rc.d  && chown root:root -R /etc/s6-overlay/s6-rc.d
-RUN chmod a+x /run.sh && chown root:root -R
+RUN chmod a+x /run.sh && chown root:root -R /etc/s6-overlay/s6-rc.d
 
 CMD ["/run.sh"]
 
