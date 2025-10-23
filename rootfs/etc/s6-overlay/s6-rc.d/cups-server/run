@@ -8,5 +8,5 @@ bashio::log.info "Starting CUPS server from S6"
 #   sleep 1s
 # done
 
-cupsd -f
+# cupsd -f
 

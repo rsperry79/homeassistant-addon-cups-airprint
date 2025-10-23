@@ -1,6 +1,6 @@
 name: AirPrint Server
 version: "1.7"
-slug: cupsik
+slug: airprint
 description: A CUPS print server with working AirPrint
 arch:
   - amd64
@@ -16,7 +16,6 @@ ports:
 ports_description:
   631/tcp: For other devices on the local network to print to this server
   631/udp: For other devices on the local network to print to this server
-# ingress: false
 map:
   - type: ssl
     read_only: true
