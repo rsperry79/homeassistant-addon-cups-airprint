@@ -22,7 +22,7 @@ map:
     read_only: true
     path: /ssl
   - type: homeassistant_config
-    read_only: False
+    read_only: false
     path: /config
 
 ingress: true
