@@ -38,7 +38,7 @@ else
   else
     rm -rf "$cups_cfg_path"
   fi
-  ln -s "$cups_cfg_path" "$real_cups_path"
+  ln -s  "$real_cups_path" "$cups_cfg_path"
 fi
 
 if [ ! -e "$cups_cfg_path/$cups_client_cfg" ]; then
@@ -64,7 +64,7 @@ else
   else
     rm -rf "$cups_ssl_path"
   fi
-  ln -s "$cups_ssl_path" "$real_ssl_path"
+  ln -s "$real_ssl_path" "$cups_ssl_path"
 fi
 
 # AVAHI Files
@@ -76,7 +76,7 @@ if [ -L "$avahi_cfg_path" ] && [ -d "$avahi_cfg_path" ]; then
   bashio::log.debug "$avahi_cfg_path is a valid symbolic link"
 else
   rm -rf "$avahi_cfg_path"
-  ln -s "$avahi_cfg_path" "$real_avahi_path"
+  ln -s  "$real_avahi_path" "$avahi_cfg_path"
 fi
 
 if [ ! -e "$avahi_cfg_path/$avahi_daemon_cfg" ]; then
