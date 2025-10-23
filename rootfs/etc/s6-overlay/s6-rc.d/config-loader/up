@@ -6,7 +6,7 @@
 # Home Assistant  Add-on: Cups Server
 # Persists user settings and installs custom user packages.
 # ==============================================================================
-bashio::log.info  "config-loader s6 script"
+echo "config-loader s6 script"
 
 
 # local file paths
