@@ -9,15 +9,15 @@
 mkdir -p /var/run/dbus
 
 # local file paths
-templates_path="/templates"
-cups_cfg_path="/etc/cups/"
-cups_ssl_path="$cups_cfg_path/ssl"
-avahi_cfg_path="/etc/avahi"
+templates_path='/templates'
+cups_cfg_path='/etc/cups/'
+cups_ssl_path='/etc/cups/ssl'
+avahi_cfg_path='/etc/avahi'
 
 
 # HA File paths
-real_config_path="/data"
-real_ssl_path="/ssl"
+real_config_path='/data'
+real_ssl_path='/ssl'
 
 # CUPS paths
 real_cups_path="$real_config_path/cups"
