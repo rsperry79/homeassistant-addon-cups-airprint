@@ -21,6 +21,9 @@ map:
   - type: ssl
     read_only: true
     path: /ssl
+  - type: homeassistant_config
+    read_only: False
+    path: /data
 
 ingress: true
 ingress_port: 631
