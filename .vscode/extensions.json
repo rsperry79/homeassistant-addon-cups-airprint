@@ -21,6 +21,7 @@
     "aaron-bond.better-comments",
     "yzhang.markdown-all-in-one",
     "rogalmic.bash-debug",
-    "mads-hartmann.bash-ide-vscode"
+    "mads-hartmann.bash-ide-vscode",
+    "redhat.vscode-yaml"
   ]
 }

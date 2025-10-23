@@ -20,78 +20,89 @@ readonly cups_daemon_cfg=cupsd.conf
 readonly cups_files_cfg=cups-files.conf
 
 # Avahi paths
-
 readonly avahi_daemon_cfg=avahi-daemon.conf
 
-if [ ! -d "$real_config_path" ]; then
-  mkdir -p "$real_config_path"
-fi
 
-# CUPS Files
-if [ ! -d "$real_cups_path" ]; then
-  mkdir -p "$real_cups_path"
-fi
-
-if [ -L "$cups_cfg_path" ] && [ -d "$cups_cfg_path" ]; then
-  bashio::log.info "$cups_cfg_path is a valid symbolic link"
-else
-  bashio::log.info "$cups_cfg_path is a not valid symbolic link"
-
-  if [ -L "$cups_cfg_path" ]; then
-    bashio::log.info "$cups_cfg_path unlinking"
-    unlink "$cups_cfg_path"
-  else
-    bashio::log.info "$cups_cfg_path removing"
-    rm -rf "$cups_cfg_path"
+function setup_cups() {
+  # CUPS Files
+  if [ ! -d "$real_cups_path" ]; then
+    mkdir -p "$real_cups_path"
   fi
 
-  ln -sn "$real_cups_path" "$cups_cfg_path"
-  bashio::log.info "$cups_cfg_path linking"
-fi
-
-if [ ! -e "$cups_cfg_path/$cups_client_cfg" ]; then
-  cp "$cups_templates_path/$cups_client_cfg" "$cups_cfg_path/$cups_client_cfg"
-  bashio::log.debug "Copied $cups_client_cfg"
-fi
-
-if [ ! -e "$cups_cfg_path/$cups_daemon_cfg" ]; then
-  cp "$cups_templates_path/$cups_daemon_cfg" "$cups_cfg_path/$cups_daemon_cfg"
-  bashio::log.debug "Copied $cups_daemon_cfg"
-fi
-
-if [ ! -e "$cups_cfg_path/$cups_files_cfg" ]; then
-  cp "$cups_templates_path/$cups_files_cfg" "$cups_cfg_path/$cups_files_cfg"
-  bashio::log.debug "Copied $cups_files_cfg"
-fi
-
-if [ -L "$cups_ssl_path" ] && [ -d "$cups_ssl_path" ]; then
-  bashio::log.debug "$cups_ssl_path is a valid symbolic link"
-else
-  if [ -L "$cups_ssl_path" ]; then
-    unlink "$cups_ssl_path"
+  if [ -L "$cups_cfg_path" ] && [ -d "$cups_cfg_path" ]; then
+    bashio::log.info "$cups_cfg_path is a valid symbolic link"
   else
-    rm -rf "$cups_ssl_path"
+    bashio::log.info "$cups_cfg_path is a not valid symbolic link"
+
+    if [ -L "$cups_cfg_path" ]; then
+      bashio::log.info "$cups_cfg_path unlinking"
+      unlink "$cups_cfg_path"
+    else
+      bashio::log.info "$cups_cfg_path removing"
+      rm -rf "$cups_cfg_path"
+    fi
+
+    ln -sn "$real_cups_path" "$cups_cfg_path"
+    bashio::log.info "$cups_cfg_path linking"
   fi
-  ln -sn  "$real_ssl_path" "$cups_ssl_path"
-fi
 
-# AVAHI Files
-if [ ! -d "$real_avahi_path" ]; then
-  mkdir -p "$real_avahi_path"
-fi
-
-if [ -L "$avahi_cfg_path" ] && [ -d "$avahi_cfg_path" ]; then
-  bashio::log.debug "$avahi_cfg_path is a valid symbolic link"
-else
-  if [ -L "$avahi_cfg_path" ]; then
-    unlink "$avahi_cfg_path"
+  if [ ! -e "$cups_cfg_path/$cups_client_cfg" ]; then
+    cp "$cups_templates_path/$cups_client_cfg" "$cups_cfg_path/$cups_client_cfg"
+    bashio::log.debug "Copied $cups_client_cfg"
   else
-    rm -rf "$avahi_cfg_path"
+      bashio::log.debug "$cups_client_cfg exists"
   fi
-  ln -sn "$real_avahi_path" "$avahi_cfg_path"
-fi
 
-if [ ! -e "$avahi_cfg_path/$avahi_daemon_cfg" ]; then
-  cp "$avahi_templates_path/$avahi_daemon_cfg" "$avahi_cfg_path/$avahi_daemon_cfg"
-fi
+  if [ ! -e "$cups_cfg_path/$cups_daemon_cfg" ]; then
+    cp "$cups_templates_path/$cups_daemon_cfg" "$cups_cfg_path/$cups_daemon_cfg"
+    bashio::log.debug "Copied $cups_daemon_cfg"
+  fi
 
+  if [ ! -e "$cups_cfg_path/$cups_files_cfg" ]; then
+    cp "$cups_templates_path/$cups_files_cfg" "$cups_cfg_path/$cups_files_cfg"
+    bashio::log.debug "Copied $cups_files_cfg"
+  fi
+
+  if [ -L "$cups_ssl_path" ] && [ -d "$cups_ssl_path" ]; then
+    bashio::log.debug "$cups_ssl_path is a valid symbolic link"
+  else
+    if [ -L "$cups_ssl_path" ]; then
+      unlink "$cups_ssl_path"
+    else
+      rm -rf "$cups_ssl_path"
+    fi
+    ln -sn  "$real_ssl_path" "$cups_ssl_path"
+  fi
+}
+
+function setup_avahi() {
+  # AVAHI Files
+  if [ ! -d "$real_avahi_path" ]; then
+    mkdir -p "$real_avahi_path"
+  fi
+
+  if [ -L "$avahi_cfg_path" ] && [ -d "$avahi_cfg_path" ]; then
+    bashio::log.debug "$avahi_cfg_path is a valid symbolic link"
+  else
+    if [ -L "$avahi_cfg_path" ]; then
+      unlink "$avahi_cfg_path"
+    else
+      rm -rf "$avahi_cfg_path"
+    fi
+    ln -sn "$real_avahi_path" "$avahi_cfg_path"
+  fi
+
+  if [ ! -e "$avahi_cfg_path/$avahi_daemon_cfg" ]; then
+    cp "$avahi_templates_path/$avahi_daemon_cfg" "$avahi_cfg_path/$avahi_daemon_cfg"
+  fi
+}
+
+function init () {
+  if [ ! -d "$real_config_path" ]; then
+    mkdir -p "$real_config_path"
+  fi
+  setup_cups
+  setup_avahi
+}
+
+init

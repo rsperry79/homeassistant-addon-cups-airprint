@@ -1,6 +1,5 @@
 {
   "remote.SSH.remoteServerListenOnSocket": true,
-  "skipFiles": ["~/.vscode-server/**/*"],
   "cSpell.ignorePaths": [".vscode", "~/.vscode-server/**/*"],
   "cSpell.words": [
     "airprint",
@@ -88,6 +87,6 @@
     "editor.defaultFormatter": "mads-hartmann.bash-ide-vscode"
   },
   "[jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "vscode.json-language-features"
   }
 }
