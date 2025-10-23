@@ -6,16 +6,38 @@ LABEL io.hass.version="1.5" io.hass.type="addon" io.hass.arch="aarch64|amd64"
 # Set shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
+# Optimize APT for faster, smaller builds
+RUN echo 'APT::Install-Recommends "false";' > /etc/apt/apt.conf.d/99no-recommends \
+    && echo 'APT::Install-Suggests "false";' >> /etc/apt/apt.conf.d/99no-recommends \
+    && echo 'APT::Get::Clean "always";' >> /etc/apt/apt.conf.d/99auto-clean \
+    && echo 'DPkg::Post-Invoke {"/bin/rm -f /var/cache/apt/archives/*.deb || true";};' >> /etc/apt/apt.conf.d/99auto-clean
+
 RUN apt update \
     && apt install -y --no-install-recommends \
+        # System packages
         sudo \
         locales \
+        whois \
+        bash-completion \
+        procps \
+        lsb-release \
+        nano \
+        gnupg2 \
+        inotify-tools \
+        # CUPS printing packages
         cups \
         cups-filters \
+        cups-pdf \
+        colord \
+        python3-cups \
+        cups-tea4cups \
+        # Network
         avahi-daemon \
         libnss-mdns \
         dbus \
-        colord \
+        samba \
+        samba-client \
+        # Printer Drivers
         printer-driver-all-enforce \
         printer-driver-all \
         printer-driver-splix \
@@ -28,14 +50,7 @@ RUN apt update \
         printer-driver-foo2zjs \
         printer-driver-hpcups \
         printer-driver-escpr \
-        cups-pdf \
-        gnupg2 \
-        lsb-release \
-        nano \
-        samba \
-        bash-completion \
-        procps \
-        whois \
+
     && apt clean -y \
     && rm -rf /var/lib/apt/lists/*
 
@@ -58,7 +73,7 @@ RUN useradd \
   --password=$(mkpasswd print) \
   print \
 && sed -i '/%sudo[[:space:]]/ s/ALL[[:space:]]*$/NOPASSWD:ALL/' /etc/sudoers
-# RUN chmod -R a+x /etc/s6-overlay/s6-rc.d  && chown root:root -R /etc/s6-overlay/s6-rc.d
+
 RUN chmod a+x /run.sh
 
 HEALTHCHECK \

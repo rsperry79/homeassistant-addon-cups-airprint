@@ -31,4 +31,6 @@ map:
 
 ingress: true
 ingress_port: 631
-ingress_stream: true
+# ingress_stream: true
+startup: system
+boot: auto

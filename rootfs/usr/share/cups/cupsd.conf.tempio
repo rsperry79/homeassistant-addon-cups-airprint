@@ -15,9 +15,8 @@ MaxLogSize 0
 ErrorPolicy retry-job
 
 # Only listen for connections from the local machine.
-Listen /run/cups/cups.sock
-Listen 0.0.0.0:631
 Port 631
+Listen /run/cups/cups.sock
 
 # Show shared printers on the local network.
 Browsing Yes
@@ -25,6 +24,13 @@ BrowseLocalProtocols all
 
 # Default authentication type, when authentication is required...
 DefaultAuthType Basic
+DefaultEncryption IfRequested
+
+# Host header validation
+# {{.hostname}}.local {{.internal}} {{.external}}
+#ServerAlias *
+
+#ServerName {{.hostname}}
 
 # Web interface setting...
 WebInterface Yes
@@ -147,7 +153,7 @@ IdleExitTimeout 60
   </Limit>
 </Policy>
 
-# Set the kerberized printer/job policies...
+# Set the kerberos printer/job policies...
 <Policy kerberos>
   # Job/subscription privacy...
   JobPrivateAccess default
