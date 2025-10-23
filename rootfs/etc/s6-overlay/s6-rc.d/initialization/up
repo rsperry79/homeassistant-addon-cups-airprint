@@ -10,13 +10,12 @@ mkdir -p /var/run/dbus
 
 # local file paths
 templates_path='/templates'
-cups_cfg_path='/etc/cups/'
+cups_cfg_path='/etc/cups'
 cups_ssl_path='/etc/cups/ssl'
 avahi_cfg_path='/etc/avahi'
 
-
 # HA File paths
-real_config_path='/data'
+real_config_path='/data/cups'
 real_ssl_path='/ssl'
 
 # CUPS paths
@@ -41,7 +40,7 @@ fi
 if [ -L "$cups_cfg_path" ] && [ -d "$cups_cfg_path" ]; then
   echo "$cups_cfg_path is a valid symbolic link"
 else
-  rm "$cups_cfg_path"
+  rm -rf "$cups_cfg_path"
   ln -s "$cups_cfg_path" "$real_cups_path"
 fi
 
@@ -63,7 +62,7 @@ fi
 if [ -L "$cups_ssl_path" ] && [ -d "$cups_ssl_path" ]; then
   echo "$cups_ssl_path is a valid symbolic link"
 else
-  rm -f "$cups_ssl_path"
+  rm -rf "$cups_ssl_path"
   ln -s "$cups_ssl_path" "$real_ssl_path"
 fi
 
