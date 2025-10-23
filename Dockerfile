@@ -61,5 +61,5 @@ RUN useradd \
 # RUN chmod -R a+x /etc/s6-overlay/s6-rc.d  && chown root:root -R /etc/s6-overlay/s6-rc.d
 RUN chmod a+x /run.sh
 
-CMD ["/run.sh"]
+CMD ["bashio", "/run.sh"]
 
