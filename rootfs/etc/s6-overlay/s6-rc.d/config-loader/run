@@ -46,19 +46,19 @@ function setup_cups() {
     bashio::log.info "$cups_cfg_path linking"
   fi
 
-  if [ ! -e "$cups_cfg_path/$cups_client_cfg" ]; then
+  if [ ! -e "$real_cups_path/$cups_client_cfg" ]; then
     cp "$cups_templates_path/$cups_client_cfg" "$real_cups_path/$cups_client_cfg"
     bashio::log.debug "Copied $cups_client_cfg"
   else
       bashio::log.debug "$cups_client_cfg exists"
   fi
 
-  if [ ! -e "$cups_cfg_path/$cups_daemon_cfg" ]; then
+  if [ ! -e "$real_cups_path/$cups_daemon_cfg" ]; then
     cp "$cups_templates_path/$cups_daemon_cfg" "$real_cups_path/$cups_daemon_cfg"
     bashio::log.debug "Copied $cups_daemon_cfg"
   fi
 
-  if [ ! -e "$cups_cfg_path/$cups_files_cfg" ]; then
+  if [ ! -e "$real_cups_path/$cups_files_cfg" ]; then
     cp "$cups_templates_path/$cups_files_cfg" "$real_cups_path/$cups_files_cfg"
     bashio::log.debug "Copied $cups_files_cfg"
   fi
@@ -92,7 +92,7 @@ function setup_avahi() {
     ln -sn "$real_avahi_path" "$avahi_cfg_path"
   fi
 
-  if [ ! -e "$avahi_cfg_path/$avahi_daemon_cfg" ]; then
+  if [ ! -e "$real_avahi_path/$avahi_daemon_cfg" ]; then
     cp "$avahi_templates_path/$avahi_daemon_cfg" "$real_avahi_path/$avahi_daemon_cfg"
   fi
 }
