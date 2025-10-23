@@ -48,23 +48,23 @@ function setup_cups() {
 
   if [ ! -e "$real_cups_path/$cups_client_cfg" ]; then
     cp "$cups_templates_path/$cups_client_cfg" "$real_cups_path/$cups_client_cfg"
-    bashio::log.debug "Copied $cups_client_cfg"
+    bashio::log.info "Copied $cups_client_cfg"
   else
-      bashio::log.debug "$cups_client_cfg exists"
+      bashio::log.info "$cups_client_cfg exists"
   fi
 
   if [ ! -e "$real_cups_path/$cups_daemon_cfg" ]; then
     cp "$cups_templates_path/$cups_daemon_cfg" "$real_cups_path/$cups_daemon_cfg"
-    bashio::log.debug "Copied $cups_daemon_cfg"
+    bashio::log.info "Copied $cups_daemon_cfg"
   fi
 
   if [ ! -e "$real_cups_path/$cups_files_cfg" ]; then
     cp "$cups_templates_path/$cups_files_cfg" "$real_cups_path/$cups_files_cfg"
-    bashio::log.debug "Copied $cups_files_cfg"
+    bashio::log.info "Copied $cups_files_cfg"
   fi
 
   if [ -L "$cups_ssl_path" ] && [ -d "$cups_ssl_path" ]; then
-    bashio::log.debug "$cups_ssl_path is a valid symbolic link"
+    bashio::log.info "$cups_ssl_path is a valid symbolic link"
   else
     if [ -L "$cups_ssl_path" ]; then
       unlink "$cups_ssl_path"
@@ -82,7 +82,7 @@ function setup_avahi() {
   fi
 
   if [ -L "$avahi_cfg_path" ] && [ -d "$avahi_cfg_path" ]; then
-    bashio::log.debug "$avahi_cfg_path is a valid symbolic link"
+    bashio::log.info "$avahi_cfg_path is a valid symbolic link"
   else
     if [ -L "$avahi_cfg_path" ]; then
       unlink "$avahi_cfg_path"
@@ -94,6 +94,7 @@ function setup_avahi() {
 
   if [ ! -e "$real_avahi_path/$avahi_daemon_cfg" ]; then
     cp "$avahi_templates_path/$avahi_daemon_cfg" "$real_avahi_path/$avahi_daemon_cfg"
+    bashio::log.info "Copied $avahi_daemon_cfg"
   fi
 }
 
