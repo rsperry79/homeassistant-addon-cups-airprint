@@ -1,7 +1,8 @@
 #!/command/with-contend bashio
 
 # local file paths
-readonly templates_path=/templates
+readonly avahi_templates_path=/templates/avahi
+readonly cups_templates_path=/templates/cups
 readonly cups_cfg_path=/etc/cups
 readonly cups_ssl_path=/etc/cups/ssl
 readonly avahi_cfg_path=/etc/avahi
@@ -41,17 +42,17 @@ else
 fi
 
 if [ ! -e "$cups_cfg_path/$cups_client_cfg" ]; then
-  cp "$templates_path/$cups_client_cfg" "$cups_cfg_path/$cups_client_cfg"
+  cp "$cups_templates_path/$cups_client_cfg" "$cups_cfg_path/$cups_client_cfg"
   bashio::log.debug "Copied $cups_client_cfg"
 fi
 
 if [ ! -e "$cups_cfg_path/$cups_daemon_cfg" ]; then
-  cp "$templates_path/$cups_daemon_cfg" "$cups_cfg_path/$cups_daemon_cfg"
+  cp "$cups_templates_path/$cups_daemon_cfg" "$cups_cfg_path/$cups_daemon_cfg"
   bashio::log.debug "Copied $cups_daemon_cfg"
 fi
 
 if [ ! -e "$cups_cfg_path/$cups_files_cfg" ]; then
-  cp "$templates_path/$cups_files_cfg" "$cups_cfg_path/$cups_files_cfg"
+  cp "$cups_templates_path/$cups_files_cfg" "$cups_cfg_path/$cups_files_cfg"
   bashio::log.debug "Copied $cups_files_cfg"
 fi
 
@@ -79,6 +80,6 @@ else
 fi
 
 if [ ! -e "$avahi_cfg_path/$avahi_daemon_cfg" ]; then
-  cp "$templates_path/$avahi_daemon_cfg" "$avahi_cfg_path/$avahi_daemon_cfg"
+  cp "$avahi_templates_path/$avahi_daemon_cfg" "$avahi_cfg_path/$avahi_daemon_cfg"
 fi
 

@@ -1,2 +1,2 @@
 #!/command/with-contend bashio
-bash /etc/s6-overlay/s6-rc.d/config-loader/run
+bashio /etc/s6-overlay/s6-rc.d/config-loader/run
