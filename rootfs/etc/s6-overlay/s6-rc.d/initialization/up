@@ -6,6 +6,7 @@
 # Home Assistant  Add-on: Cups Server
 # Persists user settings and installs custom user packages.
 # ==============================================================================
+bashio::log.info  "initialization s6 script"
 mkdir -p /var/run/dbus
 
 # local file paths
@@ -38,7 +39,7 @@ if [ ! -d "$real_cups_path" ]; then
 fi
 
 if [ -L "$cups_cfg_path" ] && [ -d "$cups_cfg_path" ]; then
-  echo "$cups_cfg_path is a valid symbolic link"
+  bashio::log.debug "$cups_cfg_path is a valid symbolic link"
 else
   rm -rf "$cups_cfg_path"
   ln -s "$cups_cfg_path" "$real_cups_path"
@@ -46,21 +47,21 @@ fi
 
 if [ ! -e "$cups_cfg_path/$cups_client_cfg" ]; then
   cp "$templates_path/$cups_client_cfg" "$cups_cfg_path/$cups_client_cfg"
-  echo "Copied $cups_client_cfg"
+  bashio::log.debug "Copied $cups_client_cfg"
 fi
 
 if [ ! -e "$cups_cfg_path/$cups_daemon_cfg" ]; then
   cp "$templates_path/$cups_daemon_cfg" "$cups_cfg_path/$cups_daemon_cfg"
-  echo "Copied $cups_daemon_cfg"
+  bashio::log.debug "Copied $cups_daemon_cfg"
 fi
 
 if [ ! -e "$cups_cfg_path/$cups_files_cfg" ]; then
   cp "$templates_path/$cups_files_cfg" "$cups_cfg_path/$cups_files_cfg"
-  echo "Copied $cups_files_cfg"
+  bashio::log.debug "Copied $cups_files_cfg"
 fi
 
 if [ -L "$cups_ssl_path" ] && [ -d "$cups_ssl_path" ]; then
-  echo "$cups_ssl_path is a valid symbolic link"
+  bashio::log.debug "$cups_ssl_path is a valid symbolic link"
 else
   rm -rf "$cups_ssl_path"
   ln -s "$cups_ssl_path" "$real_ssl_path"
@@ -72,7 +73,7 @@ if [ ! -d "$real_avahi_path" ]; then
 fi
 
 if [ -L "$avahi_cfg_path" ] && [ -d "$avahi_cfg_path" ]; then
-  echo "$avahi_cfg_path is a valid symbolic link"
+  bashio::log.debug "$avahi_cfg_path is a valid symbolic link"
 else
   rm -rf "$avahi_cfg_path"
   ln -s "$avahi_cfg_path" "$real_avahi_path"
