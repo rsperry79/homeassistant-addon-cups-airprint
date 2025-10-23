@@ -10,7 +10,6 @@ init: false
 panel_icon: mdi:printer
 homeassistant_api: true
 host_network: true
-host_dbus: true
 ports:
   631/tcp: 631
   631/udp: 631
