@@ -54,7 +54,6 @@ function setup_cups() {
       bashio::log.info "$cups_client_cfg exists"
   fi
 
-  # Tempio
   # if [ ! -e "$real_cups_path/$cups_daemon_cfg" ]; then
   #   cp "$cups_templates_path/$cups_daemon_cfg" "$real_cups_path/$cups_daemon_cfg"
   #   bashio::log.info "Copied $cups_daemon_cfg"
@@ -82,9 +81,7 @@ function setup_cups() {
     mkdir -p "$real_cups_log_path"
   fi
 }
-
-function autoconf_cups() {
-  if [ ! -e "$real_cups_path/$cups_daemon_cfg" ]; then
+function autoconf_setup() {
         hostname=$(bashio::info.hostname)
 
         # Get all possible hostnames from configuration
@@ -93,38 +90,27 @@ function autoconf_cups() {
 
         internal=$(bashio::jq "$result" '.internal_url' | cut -d'/' -f3 | cut -d':' -f1)
         external=$(bashio::jq "$result" '.external_url' | cut -d'/' -f3 | cut -d':' -f1)
-
-        # Fill config file templates with runtime data
+                # Fill config file templates with runtime data
         config=$(jq --arg internal "$internal" --arg external "$external" --arg hostname "$hostname" \
             '{internal: $internal, external: $external, hostname: $hostname}' \
             /data/options.json)
+}
 
+function autoconf_cups() {
+  if [ ! -e "$real_cups_path/$cups_daemon_cfg" ]; then
         echo "$config" | tempio \
-            -template /usr/share/cups/cupsd.conf.tempio \
-            -out "$real_cups_path"/cupsd.conf
+            -template "$cups_templates_path/$cups_daemon_cfg.tempio" \
+            -out "$real_cups_path/$cups_daemon_cfg"
   fi
 }
 
 
 function autoconf_avahi() {
   if [ ! -e "$real_cups_path/$cups_daemon_cfg" ]; then
-        hostname=$(bashio::info.hostname)
-
-        # Get all possible hostnames from configuration
-        result=$(bashio::api.supervisor GET /core/api/config true || true)
-
-
-        internal=$(bashio::jq "$result" '.internal_url' | cut -d'/' -f3 | cut -d':' -f1)
-        external=$(bashio::jq "$result" '.external_url' | cut -d'/' -f3 | cut -d':' -f1)
-
-        # Fill config file templates with runtime data
-        config=$(jq --arg internal "$internal" --arg external "$external" --arg hostname "$hostname" \
-            '{internal: $internal, external: $external, hostname: $hostname}' \
-            /data/options.json)
 
         echo "$config" | tempio \
-            -template /usr/share/cups/cupsd.conf.tempio \
-            -out "$real_cups_path"/cupsd.conf
+            -template "$avahi_templates_path/$avahi_daemon_cfg.tempio" \
+            -out "$real_avahi_path/$avahi_daemon_cfg"
   fi
 }
 
@@ -144,26 +130,27 @@ function setup_avahi() {
       rm -rf "$avahi_cfg_path"
         bashio::log.info "$avahi_cfg_path removed"
     fi
-    ln -sn "$real_avahi_path" "$avahi_cfg_path"
+    ln -sn "$real_avahi_path" "$real_avahi_path/$avahi_daemon_cfg"
   fi
 
   if [ ! -e "$real_avahi_path/$avahi_daemon_cfg" ]; then
     cp "$avahi_templates_path/$avahi_daemon_cfg" "$real_avahi_path/$avahi_daemon_cfg"
-    bashio::log.info "Copied $avahi_daemon_cfg"
+  autoconf_avahi
   fi
 }
 
-function init () {
+function run_setup () {
   if [ ! -d "$real_config_path" ]; then
     mkdir -p "$real_config_path"
   fi
+
+  autoconf_setup
   setup_cups
   setup_avahi
 
-
-  find "$real_config_path" -type f -print0 | while IFS= read -r -d '' file; do
-    bashio::log.info "Detected data file: $file"
-  done
+  # find "$real_config_path" -type f -print0 | while IFS= read -r -d '' file; do
+  #   bashio::log.info "Detected data file: $file"
+  # done
 }
 
-init
+run_setup
