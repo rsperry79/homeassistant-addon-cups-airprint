@@ -10,6 +10,7 @@ readonly avahi_cfg_path=/etc/avahi
 # HA File paths
 readonly real_config_path=/config
 readonly real_cups_path=/config/cups
+readonly real_cups_log_path=/config/cups/logs
 readonly real_ssl_path=/ssl
 readonly real_avahi_path=/config/avahi
 
@@ -72,6 +73,10 @@ function setup_cups() {
       rm -rf "$cups_ssl_path"
     fi
     ln -sn  "$real_ssl_path" "$cups_ssl_path"
+  fi
+
+  if [ ! -d "$real_cups_log_path" ]; then
+    mkdir -p "$real_cups_log_path"
   fi
 }
 
