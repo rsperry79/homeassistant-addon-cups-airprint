@@ -107,12 +107,8 @@ function init () {
   setup_cups
   setup_avahi
 
-  find /data/airprint-server/ -type f -print0 | while IFS= read -r -d '' file; do
-    bashio::log.info "Detected data file: $file"
-  done
 
-
-  find /config -type f -print0 | while IFS= read -r -d '' file; do
+  find "$real_config_path" -type f -print0 | while IFS= read -r -d '' file; do
     bashio::log.info "Detected data file: $file"
   done
 
