@@ -1,4 +1,3 @@
 #!/command/with-contend bashio
 
-
 mkdir -p /var/run/dbus

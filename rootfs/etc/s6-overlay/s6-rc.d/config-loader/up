@@ -1,13 +1,11 @@
 #!/command/with-contend bashio
 
-
 # shellcheck shell=bash
+
 # ==============================================================================
 # Home Assistant  Add-on: Cups Server
 # Persists user settings and installs custom user packages.
 # ==============================================================================
-echo "config-loader s6 script"
-
 
 # local file paths
 templates_path='/templates'
