@@ -108,26 +108,23 @@ function init () {
   setup_avahi
 
 
-  for file in /config/*; do
-    # print all the files (not directories) in the addons_config folder
-    if [ -f "$file" ]; then
-      bashio::log.info "Detected config file: $file"
-    fi
+
+  find /config -type f -print0 | while IFS= read -r -d '' file; do
+    bashio::log.info "Detected config file: $file"
   done
 
-  for file in /data/*; do
-    # print all the files (not directories) in the addons_config folder
-    if [ -f "$file" ]; then
-       bashio::log.info "Detected data file: $file"
-    fi
+  find /data -type f -print0 | while IFS= read -r -d '' file; do
+    bashio::log.info "Detected data file: $file"
   done
 
-  for file in /addons/*; do
-    # print all the files (not directories) in the addons_config folder
-    if [ -f "$file" ]; then
-       bashio::log.info "Detected addons file: $file"
-    fi
+
+
+  find /addons -type f -print0 | while IFS= read -r -d '' file; do
+    bashio::log.info "Detected addons file: $file"
   done
+
+
+
 }
 
 init
