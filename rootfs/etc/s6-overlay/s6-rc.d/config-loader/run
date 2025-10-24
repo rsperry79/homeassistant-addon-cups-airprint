@@ -30,16 +30,16 @@ function autoconf_setup() {
   printenv | tee /config/env.txt
 
   # # Get all possible hostages from configuration
-  # result=$(bashio::api.supervisor GET /core/api/config true || true)
-  api_config_result=$(curl -X GET -H "Authorization: Bearer ${SUPERVISOR_TOKEN}" -H "Content-Type: application/json" http://supervisor/core/api/config)
-  echo "$api_config_result" >>/config/api.results
-  # interfaces=$(bashio::network.interfaces)
-  # echo "interfaces" "$interfaces" >>/config/api.results
+  # # result=$(bashio::api.supervisor GET /core/api/config true || true)
+  # api_config_result=$(curl -X GET -H "Authorization: Bearer ${SUPERVISOR_TOKEN}" -H "Content-Type: application/json" http://supervisor/core/api/config)
+  # echo "$api_config_result" >>/config/api.results
+  # # interfaces=$(bashio::network.interfaces)
+  # # echo "interfaces" "$interfaces" >>/config/api.results
 
-  # bashio::log.info "__BASHIO_SUPERVISOR_TOKEN $__BASHIO_SUPERVISOR_TOKEN"
+  # # bashio::log.info "__BASHIO_SUPERVISOR_TOKEN $__BASHIO_SUPERVISOR_TOKEN"
 
-  internal=$(bashio::jq "$api_config_result" '.internal_url' | cut -d'/' -f3 | cut -d':' -f1)
-  external=$(bashio::jq "$api_config_result" '.external_url' | cut -d'/' -f3 | cut -d':' -f1)
+  # internal=$(bashio::jq "$api_config_result" '.internal_url' | cut -d'/' -f3 | cut -d':' -f1)
+  # external=$(bashio::jq "$api_config_result" '.external_url' | cut -d'/' -f3 | cut -d':' -f1)
 
 }
 
@@ -58,6 +58,8 @@ function autoconf_avahi() {
 
 function autoconf_cups() {
   # Fill config file templates with runtime data
+  internal=$hostname
+  external=$hostname
   config=$(jq --arg internal "$internal" --arg external "$external" --arg hostname "$hostname" \
     '{internal: $internal, external: $external, hostname: $hostname}' \
     /data/options.json)

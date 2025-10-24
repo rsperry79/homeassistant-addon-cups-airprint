@@ -32,7 +32,7 @@ DefaultEncryption IfRequested
 
 # Host header validation
 # {{.hostname}}.local {{.internal}} {{.external}}
-#ServerAlias *
+ServerAlias *
 
 ServerName {{.hostname}}
 
