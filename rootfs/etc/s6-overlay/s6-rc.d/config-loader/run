@@ -109,6 +109,7 @@ function autoconf_avahi() {
     echo "$config" | tempio \
       -template /usr/share/avahi/avahi-daemon.conf.tempio \
       -out "$avahi_cfg_path/avahi-daemon.conf"
+    bashio::log.info "avahi config $?"
     # ""$real_avahi_path"/"$avahi_daemon_cfg""
     # $avahi_templates_path/$avahi_daemon_cfg".tempio
 
