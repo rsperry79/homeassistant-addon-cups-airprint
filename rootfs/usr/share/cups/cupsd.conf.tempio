@@ -30,7 +30,7 @@ DefaultEncryption IfRequested
 # {{.hostname}}.local {{.internal}} {{.external}}
 #ServerAlias *
 
-#ServerName {{.hostname}}
+ServerName {{.hostname}}
 
 # Web interface setting...
 WebInterface Yes
