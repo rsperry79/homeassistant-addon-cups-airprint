@@ -8,10 +8,11 @@ arch:
 usb: true
 init: false
 panel_icon: mdi:printer
+hassio_api: true
 homeassistant_api: true
 host_network: true
 host_dbus: true
-apparmor: false
+# apparmor: false
 ports:
   631/tcp: 631
   631/udp: 631
