@@ -9,6 +9,7 @@ usb: true
 init: false
 panel_icon: mdi:printer
 hassio_api: true
+hassio_role: homeassistant
 homeassistant_api: true
 host_network: true
 host_dbus: true
