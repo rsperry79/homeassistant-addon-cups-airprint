@@ -66,8 +66,8 @@ RUN cd /tmp \
 
 COPY rootfs /
 
-RUN  apt install /drivers/mfc9970cdwlpr-1.1.1-5.i386.deb \
-  &&  apt install /drivers/mfc9970cdwlpr-1.1.1-5.i386.deb
+RUN dpkg -i --force-all /drivers/mfc9970cdwlpr-1.1.1-5.i386.deb \
+  && dpkg -i --force-all /drivers/mfc9970cdwlpr-1.1.1-5.i386.deb
 
 
 # Add user and disable sudo password checking
