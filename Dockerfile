@@ -13,6 +13,7 @@ RUN echo 'APT::Install-Recommends "false";' > /etc/apt/apt.conf.d/99no-recommend
     && echo 'DPkg::Post-Invoke {"/bin/rm -f /var/cache/apt/archives/*.deb || true";};' >> /etc/apt/apt.conf.d/99auto-clean
 
 RUN apt update \
+    && apt upgrade -y --no-install-recommends \
     && apt install -y --no-install-recommends \
         # System packages
         sudo \
