@@ -26,18 +26,19 @@ readonly avahi_daemon_cfg=avahi-daemon.conf
 function autoconf_setup() {
 
   hostname=$(bashio::info.hostname)
-  __BASHIO_SUPERVISOR_TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkZWQ5ZDQwMzliNzc0MzEzODE4ODVjMzcxNzUxMGIyYiIsImlhdCI6MTc2MTI5MzIzMSwiZXhwIjoyMDc2NjUzMjMxfQ.qejV4P-6jf83gBL93tj-HwSacpAVwesNfuM1lwZBHhI"
+  echo "hostname" "$hostname" >>/config/api.results
 
-  # Get all possible hostages from configuration
-  result=$(bashio::api.supervisor GET /core/api/config true || true)
+  # # Get all possible hostages from configuration
+  # result=$(bashio::api.supervisor GET /core/api/config true || true)
+  api_config_result=$(curl -X GET -H "Authorization: Bearer ${SUPERVISOR_TOKEN}" -H "Content-Type: application/json" http://supervisor/core/api/config)
+  echo "$api_config_result" >>/config/api.results
+  # interfaces=$(bashio::network.interfaces)
+  # echo "interfaces" "$interfaces" >>/config/api.results
 
-  interfaces=$(bashio::network.interfaces)
-  echo "interfaces" "$interfaces" >>/config/api.results
+  # bashio::log.info "__BASHIO_SUPERVISOR_TOKEN $__BASHIO_SUPERVISOR_TOKEN"
 
-  bashio::log.info "__BASHIO_SUPERVISOR_TOKEN $__BASHIO_SUPERVISOR_TOKEN"
-
-  internal=$(bashio::jq "$result" '.internal_url' | cut -d'/' -f3 | cut -d':' -f1)
-  external=$(bashio::jq "$result" '.external_url' | cut -d'/' -f3 | cut -d':' -f1)
+  internal=$(bashio::jq "$api_config_result" '.internal_url' | cut -d'/' -f3 | cut -d':' -f1)
+  external=$(bashio::jq "$api_config_result" '.external_url' | cut -d'/' -f3 | cut -d':' -f1)
 
 }
 
