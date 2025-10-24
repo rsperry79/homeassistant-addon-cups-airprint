@@ -15,7 +15,6 @@ readonly real_ssl_path=/ssl
 readonly real_avahi_path=/config/avahi
 
 # CUPS paths
-
 readonly cups_client_cfg=client.conf
 readonly cups_daemon_cfg=cupsd.conf
 readonly cups_files_cfg=cups-files.conf
