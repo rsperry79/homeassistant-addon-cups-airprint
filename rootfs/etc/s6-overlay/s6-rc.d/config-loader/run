@@ -159,7 +159,7 @@ function ensure_templates() {
   fi
 
   if [ ! -e "$cups_templates_path/$cups_client_cfg".tempio ]; then
-    cp "$templates_path/cups/$cups_client_cfg".tempio "$cups_templates_path/$avahi_daemon_cfg".tempio
+    cp "$templates_path/cups/$cups_client_cfg".tempio "$cups_templates_path/$cups_client_cfg".tempio
   fi
 
   if [ ! -e "$cups_templates_path/$cups_daemon_cfg".tempio ]; then
