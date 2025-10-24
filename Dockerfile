@@ -68,6 +68,7 @@ COPY rootfs /
 
 # setup airprint scripts
 COPY airprint/ /opt/airprint/
+RUN chmod +x /opt/airprint/printer-update.sh
 
 
 RUN dpkg -i --force-all /drivers/mfc9970cdwlpr-1.1.1-5.i386.deb \

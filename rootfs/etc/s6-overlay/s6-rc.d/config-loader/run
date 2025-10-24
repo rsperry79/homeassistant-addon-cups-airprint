@@ -9,9 +9,9 @@ readonly cups_templates_path=/config/templates/cups
 readonly real_config_path=/config
 readonly real_cups_path=/config/cups
 
-readonly real_cups_ssl_path=/config/cups/ssl
-readonly real_cups_log_path=/config/cups/logs
-readonly real_ssl_path=/ssl
+# readonly real_cups_ssl_path=/config/cups/ssl
+# readonly real_cups_log_path=/config/cups/logs
+# readonly real_ssl_path=/ssl
 readonly real_avahi_path=/config/avahi
 
 # CUPS paths
@@ -83,17 +83,19 @@ function autoconf_cups() {
 }
 
 function ensure_avahi_dirs() {
-  # AVAHI Files
-  if [ ! -d "$real_avahi_path" ]; then
-    mkdir -p "$real_avahi_path"
-  fi
+  #   # AVAHI Files
+  #   if [ ! -d "$real_avahi_path" ]; then
+  #     mkdir -p "$real_avahi_path"
+  #   fi
+  #
+  echo
 }
 
 function ensure_cups_dirs() {
   # CUPS Files
-  if [ ! -d "$real_cups_path" ]; then
-    mkdir -p "$real_cups_path"
-  fi
+  # if [ ! -d "$real_cups_path" ]; then
+  #   mkdir -p "$real_cups_path"
+  # fi
 
   # # SSL
   # if [ -L "$real_cups_ssl_path" ] && [ -d "$real_cups_ssl_path" ]; then
@@ -106,10 +108,11 @@ function ensure_cups_dirs() {
   #   fi
   #   ln -sn "$real_ssl_path" "$cups_ssl_path"
   # fi
-  # LOGS
-  if [ ! -d "$real_cups_log_path" ]; then
-    mkdir -p "$real_cups_log_path"
-  fi
+  # # LOGS
+  # if [ ! -d "$real_cups_log_path" ]; then
+  #   mkdir -p "$real_cups_log_path"
+  # fi
+  echo
 }
 
 function ensure_templates() {

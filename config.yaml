@@ -1,6 +1,7 @@
 name: AirPrint Server
 version: "1.7"
 slug: cupsik
+boot: auto
 description: A CUPS print server with working AirPrint
 arch:
   - amd64
@@ -33,5 +34,15 @@ ingress: true
 ingress_port: 631
 # ingress_stream: true
 startup: system
-boot: auto
+
 watchdog: http://[HOST]:[PORT:631]/printers
+options:
+  packages: []
+  init_commands: []
+schema:
+  log_level: list(debug2|debug|info|notice|warn|error|crit|alert|emerg|none)?
+  config_path: str?
+  packages:
+    - str
+  init_commands:
+    - str

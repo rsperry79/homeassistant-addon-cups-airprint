@@ -1,3 +1,46 @@
 #!/command/with-contend bashio
-
+readonly cups_config_path=/config/cups
+readonly cups_log_path=/config/cups/logs
+readonly avahi_config_path=/config/avahi
 mkdir -p /var/run/dbus
+
+# Install user configured/requested packages
+if bashio::config.has_value 'packages'; then
+  apt update ||
+    bashio::exit.nok 'Failed updating packages repository indexes'
+
+  for package in $(bashio::config 'packages'); do
+    apt-get install -y "$package" ||
+      bashio::exit.nok "Failed installing package ${package}"
+  done
+fi
+
+# Cups config folder
+if ! bashio::fs.directory_exists "${cups_config_path}"; then
+  mkdir -p "${cups_config_path}" ||
+    bashio::exit.nok 'Failed to create a persistent cups config folder'
+
+  chmod 700 "${cups_config_path}" ||
+    bashio::exit.nok \
+      'Failed setting permissions on persistent cups config folder'
+fi
+
+# Cups log folder
+if ! bashio::fs.directory_exists "${cups_log_path}"; then
+  mkdir -p "${cups_log_path}" ||
+    bashio::exit.nok 'Failed to create a persistent cups logging folder'
+
+  chmod 700 "${cups_log_path}" ||
+    bashio::exit.nok \
+      'Failed setting permissions on persistent cups logging folder'
+fi
+
+# Avahi config folder
+if ! bashio::fs.directory_exists "${avahi_config_path}"; then
+  mkdir -p "${avahi_config_path}" ||
+    bashio::exit.nok 'Failed to create a persistent Avahi config folder'
+
+  chmod 700 "${avahi_config_path}" ||
+    bashio::exit.nok \
+      'Failed setting permissions on persistent Avahi config folder'
+fi
