@@ -31,7 +31,6 @@ RUN apt update \
         cups-pdf \
         colord \
         python3-cups \
-        cups-tea4cups \
         # Network
         avahi-utils \
         libnss-mdns \

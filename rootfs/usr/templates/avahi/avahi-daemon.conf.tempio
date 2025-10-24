@@ -27,7 +27,7 @@ host-name={{.hostname}}
 domain-name=local
 #browse-domains=0pointer.de, zeroconf.org
 use-ipv4=yes
-use-ipv6=no
+use-ipv6=yes
 allow-interfaces=enp2s0
 #deny-interfaces=eth1
 #check-response-ttl=no
@@ -59,7 +59,7 @@ publish-workstation=no
 #publish-a-on-ipv6=no
 
 [reflector]
-enable-reflector=no
+enable-reflector=yes
 #reflect-ipv=no
 #reflect-filters=_airplay._tcp.local,_raop._tcp.local
 
