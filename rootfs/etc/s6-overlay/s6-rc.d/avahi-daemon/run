@@ -9,3 +9,5 @@ until [ -e /run/dbus/system_bus_socket ]; do
 done
 
 avahi-daemon -f /config/avahi/avahi-daemon.conf
+
+/opt/airprint/printer-update.sh &

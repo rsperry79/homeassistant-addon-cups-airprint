@@ -66,6 +66,10 @@ RUN cd /tmp \
 
 COPY rootfs /
 
+# setup airprint scripts
+COPY airprint/ /opt/airprint/
+
+
 RUN dpkg -i --force-all /drivers/mfc9970cdwlpr-1.1.1-5.i386.deb \
   && dpkg -i --force-all /drivers/mfc9970cdwlpr-1.1.1-5.i386.deb
 
@@ -81,6 +85,3 @@ RUN useradd \
 && sed -i '/%sudo[[:space:]]/ s/ALL[[:space:]]*$/NOPASSWD:ALL/' /etc/sudoers
 
 RUN chmod a+x /run.sh
-
-HEALTHCHECK \
-    CMD curl --fail http://127.0.0.1:631/ || exit 1

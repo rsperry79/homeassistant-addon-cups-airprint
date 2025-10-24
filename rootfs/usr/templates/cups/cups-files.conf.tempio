@@ -80,11 +80,10 @@ ErrorLog /config/cups/logs/error_log
 #ServerBin /usr/lib/cups
 
 # SSL/TLS certificate for the scheduler...
-ServerCertificate /ssl/fullchain.pem
-
+# /ssl/fullchain.pem
+ServerCertificate {{.pubkey}}
 # SSL/TLS private key for the scheduler...
-ServerKey /ssl/privkey.pem
-
+ServerKey  {{.privkey}}
 
 # Location of other configuration files...
 ServerRoot /config/cups

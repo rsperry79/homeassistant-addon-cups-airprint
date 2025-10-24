@@ -4,13 +4,12 @@
 readonly templates_path=/usr/templates
 readonly avahi_templates_path=/config/templates/avahi
 readonly cups_templates_path=/config/templates/cups
-readonly cups_cfg_path=/etc/cups
-readonly cups_ssl_path=/etc/cups/ssl
-readonly avahi_cfg_path=/etc/avahi
 
 # HA File paths
 readonly real_config_path=/config
 readonly real_cups_path=/config/cups
+
+readonly real_cups_ssl_path=/config/cups/ssl
 readonly real_cups_log_path=/config/cups/logs
 readonly real_ssl_path=/ssl
 readonly real_avahi_path=/config/avahi
@@ -60,8 +59,11 @@ function autoconf_cups() {
   # Fill config file templates with runtime data
   internal=$hostname
   external=$hostname
-  config=$(jq --arg internal "$internal" --arg external "$external" --arg hostname "$hostname" \
-    '{internal: $internal, external: $external, hostname: $hostname}' \
+  privkey="/ssl/privkey.pem"
+  pubkey="/ssl/fullchain.pem"
+
+  config=$(jq --arg internal "$internal" --arg external "$external" --arg hostname "$hostname" --arg privkey "$privkey" --arg pubkey "$pubkey" \
+    '{internal: $internal, external: $external, hostname: $hostname, privkey: $privkey, pubkey: $pubkey}' \
     /data/options.json)
 
   echo "$config" | tempio \
@@ -85,21 +87,6 @@ function ensure_avahi_dirs() {
   if [ ! -d "$real_avahi_path" ]; then
     mkdir -p "$real_avahi_path"
   fi
-
-  # if [ -L "$avahi_cfg_path" ] && [ -d "$avahi_cfg_path" ]; then
-  #   bashio::log.info "$avahi_cfg_path is a valid symbolic link"
-  # else
-  #   if [ -L "$avahi_cfg_path" ]; then
-  #     unlink "$avahi_cfg_path"
-  #     bashio::log.info "$avahi_cfg_path unlinked"
-  #   else
-  #     rm -rf "$avahi_cfg_path"
-  #     bashio::log.info "$avahi_cfg_path removed"
-  #   fi
-
-  #   bashio::log.info "$avahi_cfg_path linking"
-  #   ln -sn "$real_avahi_path" "$avahi_cfg_path"
-  # fi
 }
 
 function ensure_cups_dirs() {
@@ -108,35 +95,17 @@ function ensure_cups_dirs() {
     mkdir -p "$real_cups_path"
   fi
 
-  # # Config
-  # if [ -L "$cups_cfg_path" ] && [ -d "$cups_cfg_path" ]; then
-  #   bashio::log.info "$cups_cfg_path is a valid symbolic link"
+  # # SSL
+  # if [ -L "$real_cups_ssl_path" ] && [ -d "$real_cups_ssl_path" ]; then
+  #   bashio::log.info "$real_cups_ssl_path is a valid symbolic link"
   # else
-  #   bashio::log.info "$cups_cfg_path is a not valid symbolic link"
-
-  #   if [ -L "$cups_cfg_path" ]; then
-  #     bashio::log.info "$cups_cfg_path unlinking"
-  #     unlink "$cups_cfg_path"
+  #   if [ -L "$real_cups_ssl_path" ]; then
+  #     unlink "$real_cups_ssl_path"
   #   else
-  #     bashio::log.info "$cups_cfg_path removing"
-  #     rm -rf "$cups_cfg_path"
+  #     rm -rf "$cups_ssl_path"
   #   fi
-
-  #   ln -sn "$real_cups_path" "$cups_cfg_path"
-  #   bashio::log.info "$cups_cfg_path linking"
+  #   ln -sn "$real_ssl_path" "$cups_ssl_path"
   # fi
-
-  # SSL
-  if [ -L "$cups_ssl_path" ] && [ -d "$cups_ssl_path" ]; then
-    bashio::log.info "$cups_ssl_path is a valid symbolic link"
-  else
-    if [ -L "$cups_ssl_path" ]; then
-      unlink "$cups_ssl_path"
-    else
-      rm -rf "$cups_ssl_path"
-    fi
-    ln -sn "$real_ssl_path" "$cups_ssl_path"
-  fi
   # LOGS
   if [ ! -d "$real_cups_log_path" ]; then
     mkdir -p "$real_cups_log_path"
