@@ -65,8 +65,8 @@ RUN cd /tmp \
 
 COPY rootfs /
 
-RUN dpkg -i mfc9970cdwlpr-1.1.1-5.i386.deb \
-  && dpkg -i mfc9970cdwlpr-1.1.1-5.i386.deb
+RUN dpkg -i /drivers/mfc9970cdwlpr-1.1.1-5.i386.deb \
+  && dpkg -i /drivers/mfc9970cdwlpr-1.1.1-5.i386.deb
 # Add user and disable sudo password checking
 RUN useradd \
   --groups=sudo,lp,lpadmin \
