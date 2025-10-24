@@ -23,6 +23,33 @@ readonly cups_files_cfg=cups-files.conf
 # Avahi paths
 readonly avahi_daemon_cfg=avahi-daemon.conf
 
+function setup_avahi() {
+  # AVAHI Files
+  if [ ! -d "$real_avahi_path" ]; then
+    mkdir -p "$real_avahi_path"
+  fi
+
+  if [ -L "$avahi_cfg_path" ] && [ -d "$avahi_cfg_path" ]; then
+    bashio::log.info "$avahi_cfg_path is a valid symbolic link"
+  else
+    if [ -L "$avahi_cfg_path" ]; then
+      unlink "$avahi_cfg_path"
+      bashio::log.info "$avahi_cfg_path unlinked"
+    else
+      rm -rf "$avahi_cfg_path"
+      bashio::log.info "$avahi_cfg_path removed"
+    fi
+
+    bashio::log.info "$avahi_cfg_path linking"
+    ln -sn "$real_avahi_path" "$avahi_cfg_path"
+  fi
+
+  autoconf_avahi
+  # if [ ! -e "$real_avahi_path/$avahi_daemon_cfg" ]; then
+
+  # fi
+}
+
 function setup_cups() {
   # CUPS Files
   if [ ! -d "$real_cups_path" ]; then
@@ -83,7 +110,7 @@ function setup_cups() {
 function autoconf_setup() {
   hostname=$(bashio::info.hostname)
 
-  # Get all possible hostnames from configuration
+  # Get all possible hostages from configuration
   result=$(bashio::api.supervisor GET /core/api/config true || true)
   echo "$result" >/config/api.results
 
@@ -106,36 +133,12 @@ function autoconf_cups() {
 function autoconf_avahi() {
   #if [ ! -e "$real_cups_path/$cups_daemon_cfg" ]; then
 
-    echo "$config" | tempio \
-      -template /usr/share/avahi/avahi-daemon.conf.tempio \
-      -out "$avahi_cfg_path/avahi-daemon.conf"
-    bashio::log.info "avahi config $?"
-    # ""$real_avahi_path"/"$avahi_daemon_cfg""
-    # $avahi_templates_path/$avahi_daemon_cfg".tempio
-
- # fi
-}
-
-function setup_avahi() {
-  # AVAHI Files
-  if [ ! -d "$real_avahi_path" ]; then
-    mkdir -p "$real_avahi_path"
-  fi
-
-  if [ -L "$avahi_cfg_path" ] && [ -d "$avahi_cfg_path" ]; then
-    bashio::log.info "$avahi_cfg_path is a valid symbolic link"
-  else
-    if [ -L "$avahi_cfg_path" ]; then
-      unlink "$avahi_cfg_path"
-      bashio::log.info "$avahi_cfg_path unlinked"
-    else
-      rm -rf "$avahi_cfg_path"
-      bashio::log.info "$avahi_cfg_path removed"
-    fi
-    ln -sn "$real_avahi_path" "$real_avahi_path/$avahi_daemon_cfg"
-  fi
-  autoconf_avahi
-  # if [ ! -e "$real_avahi_path/$avahi_daemon_cfg" ]; then
+  echo "$config" | tempio \
+    -template /usr/share/avahi/avahi-daemon.conf.tempio \
+    -out "$real_config_path/avahi-daemon.conf"
+  bashio::log.info "avahi config $?"
+  # ""$real_avahi_path"/"$avahi_daemon_cfg""
+  # $avahi_templates_path/$avahi_daemon_cfg".tempio
 
   # fi
 }
