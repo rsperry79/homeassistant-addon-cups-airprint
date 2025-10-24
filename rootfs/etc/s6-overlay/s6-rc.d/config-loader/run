@@ -32,7 +32,6 @@ function autoconf_setup() {
   internal=$(bashio::jq "$result" '.internal_url' | cut -d'/' -f3 | cut -d':' -f1)
   external=$(bashio::jq "$result" '.external_url' | cut -d'/' -f3 | cut -d':' -f1)
 
-  ostname="${fqdn%%.*}"
   # Fill config file templates with runtime data
   config=$(jq --arg internal "$internal" --arg external "$external" --arg hostname "$hostname" \
     '{internal: $internal, external: $external, hostname: $hostname}' \
@@ -40,10 +39,9 @@ function autoconf_setup() {
 }
 
 function autoconf_avahi() {
-
-
+  host="${hostname%%.*}"
   # Fill config file templates with runtime data
-  config=$(jq --arg internal "$internal" --arg external "$external" --arg hostname "${hostname%%.*}" \
+  config=$(jq --arg internal "$internal" --arg external "$external" --arg hostname "$host" \
     '{internal: $internal, external: $external, hostname: $hostname}' \
     /data/options.json)
   #if [ ! -e "$real_cups_path/$cups_daemon_cfg" ]; then
