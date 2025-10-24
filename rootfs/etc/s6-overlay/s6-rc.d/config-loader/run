@@ -29,8 +29,8 @@ function autoconf_setup() {
 
   # Get all possible hostages from configuration
   result=$(bashio::api.supervisor GET /core/api/config true || true)
-  echo "$result" >/config/api.results
 
+  __BASHIO_SUPERVISOR_TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkZWQ5ZDQwMzliNzc0MzEzODE4ODVjMzcxNzUxMGIyYiIsImlhdCI6MTc2MTI5MzIzMSwiZXhwIjoyMDc2NjUzMjMxfQ.qejV4P-6jf83gBL93tj-HwSacpAVwesNfuM1lwZBHhI"
   interfaces=$(bashio::network.interfaces)
   echo "interfaces" "$interfaces" >>/config/api.results
 
