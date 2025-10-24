@@ -44,6 +44,7 @@ function autoconf_avahi() {
 
   use_host_dbus=no
   if bashio::config.has_value 'use_host_dbus'; then
+    bashio::log.info use_host_dbus "$use_host_dbus"
     temp=$(bashio::config 'use_host_dbus')
     if [ "$temp" = true ]; then
       temp=yes
