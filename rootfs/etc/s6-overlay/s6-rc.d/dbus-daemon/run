@@ -4,4 +4,4 @@ ulimit -n 524288
 
 bashio::log.info "Starting DBUS daemon from S6"
 
-dbus-daemon --system --nofork
+#dbus-daemon --system --nofork
