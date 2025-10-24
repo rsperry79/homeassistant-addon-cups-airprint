@@ -97,10 +97,6 @@ function run_setup() {
     mkdir -p "$real_config_path"
   fi
 
-  ensure_templates
-  ensure_cups_dirs
-  ensure_avahi_dirs
-
   autoconf_setup
   autoconf_cups
   autoconf_avahi
