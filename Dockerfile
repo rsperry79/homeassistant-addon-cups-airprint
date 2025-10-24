@@ -33,7 +33,7 @@ RUN apt update \
         python3-cups \
         cups-tea4cups \
         # Network
-        avahi-daemon \
+        avahi-utils \
         libnss-mdns \
         dbus \
         samba \
