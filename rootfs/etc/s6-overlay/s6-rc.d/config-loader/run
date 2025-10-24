@@ -1,8 +1,9 @@
 #!/command/with-contend bashio
 
 # local file paths
-readonly avahi_templates_path=/usr/share/avahi
-readonly cups_templates_path=/usr/share/cups
+readonly templates_path=/usr/templates
+readonly avahi_templates_path=/config/templates/avahi
+readonly cups_templates_path=/config/templates/cups
 readonly cups_cfg_path=/etc/cups
 readonly cups_ssl_path=/etc/cups/ssl
 readonly avahi_cfg_path=/etc/avahi
@@ -23,19 +24,21 @@ readonly cups_files_cfg=cups-files.conf
 readonly avahi_daemon_cfg=avahi-daemon.conf
 
 function autoconf_setup() {
+
   hostname=$(bashio::info.hostname)
 
   # Get all possible hostages from configuration
   result=$(bashio::api.supervisor GET /core/api/config true || true)
   echo "$result" >/config/api.results
 
+  interfaces=$(bashio::network.interfaces)
+  echo "interfaces" "$interfaces" >>/config/api.results
+
+  bashio::log.info "__BASHIO_SUPERVISOR_TOKEN $__BASHIO_SUPERVISOR_TOKEN"
+
   internal=$(bashio::jq "$result" '.internal_url' | cut -d'/' -f3 | cut -d':' -f1)
   external=$(bashio::jq "$result" '.external_url' | cut -d'/' -f3 | cut -d':' -f1)
 
-  # Fill config file templates with runtime data
-  config=$(jq --arg internal "$internal" --arg external "$external" --arg hostname "$hostname" \
-    '{internal: $internal, external: $external, hostname: $hostname}' \
-    /data/options.json)
 }
 
 function autoconf_avahi() {
@@ -49,21 +52,31 @@ function autoconf_avahi() {
   echo "$config" | tempio \
     -template "$avahi_templates_path/$avahi_daemon_cfg".tempio \
     -out "$real_avahi_path/$avahi_daemon_cfg"
-  bashio::log.info "avahi config $?"
-  # ""$real_avahi_path"/"$avahi_daemon_cfg""
-  # $avahi_templates_path/$avahi_daemon_cfg".tempio
-
-  # fi
 }
 
 function autoconf_cups() {
-  if [ ! -e "$real_cups_path/$cups_daemon_cfg" ]; then
-    echo "$config" | tempio \
-      -template "$cups_templates_path/$cups_daemon_cfg.tempio" \
-      -out "$real_cups_path/$cups_daemon_cfg"
-  fi
+  # Fill config file templates with runtime data
+  config=$(jq --arg internal "$internal" --arg external "$external" --arg hostname "$hostname" \
+    '{internal: $internal, external: $external, hostname: $hostname}' \
+    /data/options.json)
+
+  echo "$config" | tempio \
+    -template "$cups_templates_path/$cups_client_cfg.tempio" \
+    -out "$real_cups_path/$cups_client_cfg"
+
+  # if [ ! -e "$real_cups_path/$cups_daemon_cfg" ]; then
+  echo "$config" | tempio \
+    -template "$cups_templates_path/$cups_daemon_cfg.tempio" \
+    -out "$real_cups_path/$cups_daemon_cfg"
+  # fi
+
+  echo "$config" | tempio \
+    -template "$cups_templates_path/$cups_files_cfg.tempio" \
+    -out "$real_cups_path/$cups_files_cfg"
+
 }
-function setup_avahi() {
+
+function ensure_avahi_dirs() {
   # AVAHI Files
   if [ ! -d "$real_avahi_path" ]; then
     mkdir -p "$real_avahi_path"
@@ -83,19 +96,15 @@ function setup_avahi() {
     bashio::log.info "$avahi_cfg_path linking"
     ln -sn "$real_avahi_path" "$avahi_cfg_path"
   fi
-
-  autoconf_avahi
-  # if [ ! -e "$real_avahi_path/$avahi_daemon_cfg" ]; then
-
-  # fi
 }
 
-function setup_cups() {
+function ensure_cups_dirs() {
   # CUPS Files
   if [ ! -d "$real_cups_path" ]; then
     mkdir -p "$real_cups_path"
   fi
 
+  # Config
   if [ -L "$cups_cfg_path" ] && [ -d "$cups_cfg_path" ]; then
     bashio::log.info "$cups_cfg_path is a valid symbolic link"
   else
@@ -113,25 +122,7 @@ function setup_cups() {
     bashio::log.info "$cups_cfg_path linking"
   fi
 
-  if [ ! -e "$real_cups_path/$cups_client_cfg" ]; then
-    cp "$cups_templates_path/$cups_client_cfg" "$real_cups_path/$cups_client_cfg"
-    bashio::log.info "Copied $cups_client_cfg"
-  else
-    bashio::log.info "$cups_client_cfg exists"
-  fi
-
-  # if [ ! -e "$real_cups_path/$cups_daemon_cfg" ]; then
-  #   cp "$cups_templates_path/$cups_daemon_cfg" "$real_cups_path/$cups_daemon_cfg"
-  #   bashio::log.info "Copied $cups_daemon_cfg"
-  # fi
-
-  autoconf_cups
-
-  if [ ! -e "$real_cups_path/$cups_files_cfg" ]; then
-    cp "$cups_templates_path/$cups_files_cfg" "$real_cups_path/$cups_files_cfg"
-    bashio::log.info "Copied $cups_files_cfg"
-  fi
-
+  # SSL
   if [ -L "$cups_ssl_path" ] && [ -d "$cups_ssl_path" ]; then
     bashio::log.info "$cups_ssl_path is a valid symbolic link"
   else
@@ -142,10 +133,39 @@ function setup_cups() {
     fi
     ln -sn "$real_ssl_path" "$cups_ssl_path"
   fi
-
+  # LOGS
   if [ ! -d "$real_cups_log_path" ]; then
     mkdir -p "$real_cups_log_path"
   fi
+}
+
+function ensure_templates() {
+  # Avahi templates
+  if [ ! -d "$avahi_templates_path" ]; then
+    mkdir -p "$avahi_templates_path"
+  fi
+
+  if [ ! -e "$avahi_templates_path/$avahi_daemon_cfg".tempio ]; then
+    cp "$templates_path/avahi/$avahi_daemon_cfg".tempio "$avahi_templates_path/$avahi_daemon_cfg".tempio
+  fi
+
+  # CUPS templates
+  if [ ! -d "$cups_templates_path" ]; then
+    mkdir -p "$cups_templates_path"
+  fi
+
+  if [ ! -e "$cups_templates_path/$cups_client_cfg".tempio ]; then
+    cp "$templates_path/cups/$cups_client_cfg".tempio "$cups_templates_path/$avahi_daemon_cfg".tempio
+  fi
+
+  if [ ! -e "$cups_templates_path/$cups_daemon_cfg".tempio ]; then
+    cp "$templates_path/cups/$cups_daemon_cfg".tempio "$cups_templates_path/$cups_daemon_cfg".tempio
+  fi
+
+  if [ ! -e "$cups_templates_path/$cups_files_cfg".tempio ]; then
+    cp "$templates_path/cups/$cups_files_cfg".tempio "$cups_templates_path/$cups_files_cfg".tempio
+  fi
+
 }
 
 function run_setup() {
@@ -153,13 +173,13 @@ function run_setup() {
     mkdir -p "$real_config_path"
   fi
 
-  autoconf_setup
-  setup_cups
-  setup_avahi
+  ensure_templates
+  ensure_cups_dirs
+  ensure_avahi_dirs
 
-  # find "$real_config_path" -type f -print0 | while IFS= read -r -d '' file; do
-  #   bashio::log.info "Detected data file: $file"
-  # done
+  autoconf_setup
+  autoconf_cups
+  autoconf_avahi
 }
 
 run_setup
