@@ -63,10 +63,13 @@ RUN cd /tmp \
   && mv cnijfilter2-6.80-1-deb/packages/cnijfilter2_6.80-1_${ARCH}.deb cnijfilter2_6.80-1.deb \
   && apt install ./cnijfilter2_6.80-1.deb
 
+
 COPY rootfs /
 
-RUN dpkg -i  --force-all /drivers/mfc9970cdwlpr-1.1.1-5.i386.deb \
-  && dpkg -i  --force-all /drivers/mfc9970cdwlpr-1.1.1-5.i386.deb
+RUN  apt install /drivers/mfc9970cdwlpr-1.1.1-5.i386.deb \
+  &&  apt install /drivers/mfc9970cdwlpr-1.1.1-5.i386.deb
+
+
 # Add user and disable sudo password checking
 RUN useradd \
   --groups=sudo,lp,lpadmin \
