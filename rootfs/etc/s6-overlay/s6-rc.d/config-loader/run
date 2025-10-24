@@ -107,7 +107,7 @@ function autoconf_avahi() {
   if [ ! -e "$real_cups_path/$cups_daemon_cfg" ]; then
 
     echo "$config" | tempio \
-      -template "$avahi_templates_path/$avahi_daemon_cfg.tempio" \
+      -template "$avahi_templates_path/$avahi_daemon_cfg".tempio \
       -out "$real_avahi_path/$avahi_daemon_cfg"
   fi
 }
@@ -130,10 +130,10 @@ function setup_avahi() {
     fi
     ln -sn "$real_avahi_path" "$real_avahi_path/$avahi_daemon_cfg"
   fi
+  autoconf_avahi
+  # if [ ! -e "$real_avahi_path/$avahi_daemon_cfg" ]; then
 
-  if [ ! -e "$real_avahi_path/$avahi_daemon_cfg" ]; then
-    autoconf_avahi
-  fi
+  # fi
 }
 
 function run_setup() {
