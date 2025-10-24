@@ -27,6 +27,7 @@ function autoconf_setup() {
 
   hostname=$(bashio::info.hostname)
   echo "hostname" "$hostname" >>/config/api.results
+  printenv | tee /config/env.txt
 
   # # Get all possible hostages from configuration
   # result=$(bashio::api.supervisor GET /core/api/config true || true)
