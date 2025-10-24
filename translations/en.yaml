@@ -1,0 +1,17 @@
+---
+configuration:
+  log_level:
+    name: Log Level
+    description: >-
+      Defines the log level for the add-on.
+  packages:
+    name: Additional packages
+    description: >-
+      Additional packages to be installed at startup
+  use_host_dbus:
+    name: Use Host DBus for Avahi?
+    description: >-
+      Do you want to use the host machines Avahi through the DBUS?
+network:
+  631/tcp: For other devices on the local network to print to this server
+  631/udp: For other devices on the local network to print to this server

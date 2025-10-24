@@ -19,9 +19,6 @@ host_dbus: true
 ports:
   631/tcp: 631
   631/udp: 631
-ports_description:
-  631/tcp: For other devices on the local network to print to this server
-  631/udp: For other devices on the local network to print to this server
 map:
   - type: ssl
     read_only: true
@@ -36,12 +33,11 @@ ingress_port: 631
 
 watchdog: http://[HOST]:[PORT:631]/printers
 options:
+  use_host_dbus: false
+  log_level: emerg
   packages: []
-  init_commands: []
 schema:
   log_level: list(debug2|debug|info|notice|warn|error|crit|alert|emerg|none)?
-  config_path: str?
   packages:
-    - str
-  init_commands:
-    - str
+    - str?
+  use_host_dbus: bool?
