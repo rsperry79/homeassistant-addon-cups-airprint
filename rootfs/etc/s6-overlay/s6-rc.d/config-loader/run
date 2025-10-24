@@ -74,7 +74,7 @@ function autoconf_cups() {
   fi
 
   config=$(jq --arg internal "$internal" --arg external "$external" --arg hostname "$hostname" --arg privkey "$privkey" --arg pubkey "$pubkey" --arg log_level "$log_level" \
-    '{internal: $internal, external: $external, hostname: $hostname, privkey: $privkey, pubkey: $pubkey, log_level: "$log_level" }' \
+    '{internal: $internal, external: $external, hostname: $hostname, privkey: $privkey, pubkey: $pubkey, log_level: $log_level }' \
     /data/options.json)
 
   echo "$config" | tempio \
