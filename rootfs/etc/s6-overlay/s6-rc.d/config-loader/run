@@ -23,6 +23,41 @@ readonly cups_files_cfg=cups-files.conf
 # Avahi paths
 readonly avahi_daemon_cfg=avahi-daemon.conf
 
+function autoconf_setup() {
+  hostname=$(bashio::info.hostname)
+
+  # Get all possible hostages from configuration
+  result=$(bashio::api.supervisor GET /core/api/config true || true)
+  echo "$result" >/config/api.results
+
+  internal=$(bashio::jq "$result" '.internal_url' | cut -d'/' -f3 | cut -d':' -f1)
+  external=$(bashio::jq "$result" '.external_url' | cut -d'/' -f3 | cut -d':' -f1)
+  # Fill config file templates with runtime data
+  config=$(jq --arg internal "$internal" --arg external "$external" --arg hostname "$hostname" \
+    '{internal: $internal, external: $external, hostname: $hostname}' \
+    /data/options.json)
+}
+
+function autoconf_avahi() {
+  #if [ ! -e "$real_cups_path/$cups_daemon_cfg" ]; then
+
+  echo "$config" | tempio \
+    -template "$avahi_templates_path/$avahi_daemon_cfg".tempio \
+    -out "$real_config_path/$avahi_daemon_cfg"
+  bashio::log.info "avahi config $?"
+  # ""$real_avahi_path"/"$avahi_daemon_cfg""
+  # $avahi_templates_path/$avahi_daemon_cfg".tempio
+
+  # fi
+}
+
+function autoconf_cups() {
+  if [ ! -e "$real_cups_path/$cups_daemon_cfg" ]; then
+    echo "$config" | tempio \
+      -template "$cups_templates_path/$cups_daemon_cfg.tempio" \
+      -out "$real_avahi_path/$cups_daemon_cfg"
+  fi
+}
 function setup_avahi() {
   # AVAHI Files
   if [ ! -d "$real_avahi_path" ]; then
@@ -106,41 +141,6 @@ function setup_cups() {
   if [ ! -d "$real_cups_log_path" ]; then
     mkdir -p "$real_cups_log_path"
   fi
-}
-function autoconf_setup() {
-  hostname=$(bashio::info.hostname)
-
-  # Get all possible hostages from configuration
-  result=$(bashio::api.supervisor GET /core/api/config true || true)
-  echo "$result" >/config/api.results
-
-  internal=$(bashio::jq "$result" '.internal_url' | cut -d'/' -f3 | cut -d':' -f1)
-  external=$(bashio::jq "$result" '.external_url' | cut -d'/' -f3 | cut -d':' -f1)
-  # Fill config file templates with runtime data
-  config=$(jq --arg internal "$internal" --arg external "$external" --arg hostname "$hostname" \
-    '{internal: $internal, external: $external, hostname: $hostname}' \
-    /data/options.json)
-}
-
-function autoconf_cups() {
-  if [ ! -e "$real_cups_path/$cups_daemon_cfg" ]; then
-    echo "$config" | tempio \
-      -template "$cups_templates_path/$cups_daemon_cfg.tempio" \
-      -out "$real_cups_path/$cups_daemon_cfg"
-  fi
-}
-
-function autoconf_avahi() {
-  #if [ ! -e "$real_cups_path/$cups_daemon_cfg" ]; then
-
-  echo "$config" | tempio \
-    -template /usr/share/avahi/avahi-daemon.conf.tempio \
-    -out "$real_config_path/avahi-daemon.conf"
-  bashio::log.info "avahi config $?"
-  # ""$real_avahi_path"/"$avahi_daemon_cfg""
-  # $avahi_templates_path/$avahi_daemon_cfg".tempio
-
-  # fi
 }
 
 function run_setup() {
