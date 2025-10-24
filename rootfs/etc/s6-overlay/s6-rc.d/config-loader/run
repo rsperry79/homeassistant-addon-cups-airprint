@@ -1,7 +1,8 @@
 #!/command/with-contend bashio
 
 # local file paths
-readonly templates_path=/usr/templates
+# readonly src_avahi_templates_path=/usr/templates/avahi
+# readonly src_cups_templates_path=/usr/templates/cups
 readonly avahi_templates_path=/config/templates/avahi
 readonly cups_templates_path=/config/templates/cups
 
@@ -117,31 +118,31 @@ function ensure_cups_dirs() {
 
 function ensure_templates() {
   # Avahi templates
-  if [ ! -d "$avahi_templates_path" ]; then
-    mkdir -p "$avahi_templates_path"
-  fi
-
-  if [ ! -e "$avahi_templates_path/$avahi_daemon_cfg".tempio ]; then
-    cp "$templates_path/avahi/$avahi_daemon_cfg".tempio "$avahi_templates_path/$avahi_daemon_cfg".tempio
-  fi
+  # if [ ! -d "$avahi_templates_path" ]; then
+  #   mkdir -p "$avahi_templates_path"
+  # fi
 
   # CUPS templates
-  if [ ! -d "$cups_templates_path" ]; then
-    mkdir -p "$cups_templates_path"
-  fi
+  # if [ ! -d "$cups_templates_path" ]; then
+  #   mkdir -p "$cups_templates_path"
+  # fi
 
-  if [ ! -e "$cups_templates_path/$cups_client_cfg".tempio ]; then
-    cp "$templates_path/cups/$cups_client_cfg".tempio "$cups_templates_path/$cups_client_cfg".tempio
-  fi
+  # if [ ! -e "$avahi_templates_path/$avahi_daemon_cfg".tempio ]; then
+  #   cp "$src_avahi_templates_path/$avahi_daemon_cfg".tempio "$avahi_templates_path/$avahi_daemon_cfg".tempio
+  # fi
 
-  if [ ! -e "$cups_templates_path/$cups_daemon_cfg".tempio ]; then
-    cp "$templates_path/cups/$cups_daemon_cfg".tempio "$cups_templates_path/$cups_daemon_cfg".tempio
-  fi
+  # if [ ! -e "$cups_templates_path/$cups_client_cfg".tempio ]; then
+  #   cp "$src_cups_templates_path/$cups_client_cfg".tempio "$cups_templates_path/$cups_client_cfg".tempio
+  # fi
 
-  if [ ! -e "$cups_templates_path/$cups_files_cfg".tempio ]; then
-    cp "$templates_path/cups/$cups_files_cfg".tempio "$cups_templates_path/$cups_files_cfg".tempio
-  fi
+  # if [ ! -e "$cups_templates_path/$cups_daemon_cfg".tempio ]; then
+  #   cp "$src_cups_templates_path/$cups_daemon_cfg".tempio "$cups_templates_path/$cups_daemon_cfg".tempio
+  # fi
 
+  # if [ ! -e "$cups_templates_path/$cups_files_cfg".tempio ]; then
+  #   cp "$src_cups_templates_path/$cups_files_cfg".tempio "$cups_templates_path/$cups_files_cfg".tempio
+  # fi
+  echo
 }
 
 function run_setup() {
