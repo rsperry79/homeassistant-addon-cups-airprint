@@ -82,20 +82,20 @@ function ensure_avahi_dirs() {
     mkdir -p "$real_avahi_path"
   fi
 
-  if [ -L "$avahi_cfg_path" ] && [ -d "$avahi_cfg_path" ]; then
-    bashio::log.info "$avahi_cfg_path is a valid symbolic link"
-  else
-    if [ -L "$avahi_cfg_path" ]; then
-      unlink "$avahi_cfg_path"
-      bashio::log.info "$avahi_cfg_path unlinked"
-    else
-      rm -rf "$avahi_cfg_path"
-      bashio::log.info "$avahi_cfg_path removed"
-    fi
+  # if [ -L "$avahi_cfg_path" ] && [ -d "$avahi_cfg_path" ]; then
+  #   bashio::log.info "$avahi_cfg_path is a valid symbolic link"
+  # else
+  #   if [ -L "$avahi_cfg_path" ]; then
+  #     unlink "$avahi_cfg_path"
+  #     bashio::log.info "$avahi_cfg_path unlinked"
+  #   else
+  #     rm -rf "$avahi_cfg_path"
+  #     bashio::log.info "$avahi_cfg_path removed"
+  #   fi
 
-    bashio::log.info "$avahi_cfg_path linking"
-    ln -sn "$real_avahi_path" "$avahi_cfg_path"
-  fi
+  #   bashio::log.info "$avahi_cfg_path linking"
+  #   ln -sn "$real_avahi_path" "$avahi_cfg_path"
+  # fi
 }
 
 function ensure_cups_dirs() {
@@ -104,23 +104,23 @@ function ensure_cups_dirs() {
     mkdir -p "$real_cups_path"
   fi
 
-  # Config
-  if [ -L "$cups_cfg_path" ] && [ -d "$cups_cfg_path" ]; then
-    bashio::log.info "$cups_cfg_path is a valid symbolic link"
-  else
-    bashio::log.info "$cups_cfg_path is a not valid symbolic link"
+  # # Config
+  # if [ -L "$cups_cfg_path" ] && [ -d "$cups_cfg_path" ]; then
+  #   bashio::log.info "$cups_cfg_path is a valid symbolic link"
+  # else
+  #   bashio::log.info "$cups_cfg_path is a not valid symbolic link"
 
-    if [ -L "$cups_cfg_path" ]; then
-      bashio::log.info "$cups_cfg_path unlinking"
-      unlink "$cups_cfg_path"
-    else
-      bashio::log.info "$cups_cfg_path removing"
-      rm -rf "$cups_cfg_path"
-    fi
+  #   if [ -L "$cups_cfg_path" ]; then
+  #     bashio::log.info "$cups_cfg_path unlinking"
+  #     unlink "$cups_cfg_path"
+  #   else
+  #     bashio::log.info "$cups_cfg_path removing"
+  #     rm -rf "$cups_cfg_path"
+  #   fi
 
-    ln -sn "$real_cups_path" "$cups_cfg_path"
-    bashio::log.info "$cups_cfg_path linking"
-  fi
+  #   ln -sn "$real_cups_path" "$cups_cfg_path"
+  #   bashio::log.info "$cups_cfg_path linking"
+  # fi
 
   # SSL
   if [ -L "$cups_ssl_path" ] && [ -d "$cups_ssl_path" ]; then
