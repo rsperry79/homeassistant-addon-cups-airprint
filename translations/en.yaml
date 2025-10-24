@@ -1,13 +1,13 @@
 ---
 configuration:
   log_level:
-    name: Log Level
+    name: Cups Log Level
     description: >-
-      Defines the log level for the add-on.
+      Defines the log level for Cups.
   packages:
     name: Additional packages
     description: >-
-      Additional packages to be installed at startup
+      A CSV of additional apt packages to be installed at startup.
   use_host_dbus:
     name: Use Host DBus for Avahi?
     description: >-

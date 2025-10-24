@@ -67,7 +67,7 @@ function autoconf_cups() {
   external=$hostname
   privkey="/ssl/privkey.pem"
   pubkey="/ssl/fullchain.pem"
-  log_level=emerg
+  log_level="emerg"
 
   if bashio::config.has_value 'log_level'; then
     log_level=$(bashio::config 'log_level')
