@@ -42,21 +42,9 @@ function autoconf_setup() {
 function autoconf_avahi() {
   host="${hostname%%.*}"
 
-  use_host_dbus=no
-  if bashio::config.has_value 'use_host_dbus'; then
-
-    temp=$(bashio::config 'use_host_dbus')
-    bashio::log.info use_host_dbus "$temp"
-    if [ "$temp" == "true" ]; then
-      use_host_dbus=yes
-    fi
-
-  fi
-  bashio::log.info use_host_dbus "$use_host_dbus"
-
   # Fill config file templates with runtime data
-  config=$(jq --arg internal "$internal" --arg external "$external" --arg hostname "$host" --arg use_host_dbus "$use_host_dbus" \
-    '{internal: $internal, external: $external, hostname: $hostname, use_host_dbus: $use_host_dbus}' \
+  config=$(jq --arg internal "$internal" --arg external "$external" --arg hostname "$host" \
+    '{internal: $internal, external: $external, hostname: $hostname}' \
     /data/options.json)
   #if [ ! -e "$real_cups_path/$cups_daemon_cfg" ]; then
 
