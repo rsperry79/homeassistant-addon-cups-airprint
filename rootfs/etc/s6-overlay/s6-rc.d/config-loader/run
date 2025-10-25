@@ -44,12 +44,15 @@ function autoconf_avahi() {
 
   use_host_dbus=no
   if bashio::config.has_value 'use_host_dbus'; then
-    bashio::log.info use_host_dbus "$use_host_dbus"
+
     temp=$(bashio::config 'use_host_dbus')
+    bashio::log.info use_host_dbus "$temp"
     if [ "$temp" = true ]; then
       temp=yes
     fi
+
   fi
+  bashio::log.info use_host_dbus "$use_host_dbus"
 
   # Fill config file templates with runtime data
   config=$(jq --arg internal "$internal" --arg external "$external" --arg hostname "$host" --arg use_host_dbus "$use_host_dbus" \
