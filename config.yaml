@@ -7,7 +7,7 @@ description: A CUPS print server with working AirPrint
 arch:
   - amd64
   - aarch64
-usb: true
+# usb: true
 init: false
 panel_icon: mdi:printer
 hassio_role: default
@@ -30,7 +30,7 @@ map:
 ingress: true
 ingress_port: 631
 # ingress_stream: true
-
+full_access: true
 watchdog: http://[HOST]:[PORT:631]/printers
 options:
   use_host_dbus: false
@@ -39,4 +39,4 @@ schema:
   packages:
     - str?
   use_host_dbus: bool?
-privileged: NET_ADMIN, NET_RAW, SYS_ADMIN, SYS_RESOURCE
+# privileged: NET_ADMIN, NET_RAW, SYS_ADMIN, SYS_RESOURCE
