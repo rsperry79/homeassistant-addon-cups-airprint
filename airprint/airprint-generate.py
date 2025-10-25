@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 """
 Copyright (c) 2010 Timothy J Fontaine <tjfontaine@atxconsulting.com>
@@ -23,7 +23,7 @@ THE SOFTWARE.
 """
 
 import cups, os, optparse, re
-from urllib.parse import urlparse
+import urllib.parse as urlparse
 import os.path
 from io import StringIO
 
@@ -44,7 +44,8 @@ except:
             from elementtree import Element, ElementTree, tostring
             etree = None
         except:
-            raise 'Failed to find python libxml or elementtree, please install one of those or use python >= 2.5'
+            print('Failed to find python libxml or elementtree, please install one of those or use python >= 2.5')
+            raise
 
 XML_TEMPLATE = """<!DOCTYPE service-group SYSTEM "avahi-service.dtd">
 <service-group>
@@ -56,12 +57,14 @@ XML_TEMPLATE = """<!DOCTYPE service-group SYSTEM "avahi-service.dtd">
 	<txt-record>txtvers=1</txt-record>
 	<txt-record>qtotal=1</txt-record>
 	<txt-record>Transparent=T</txt-record>
+	<txt-record>URF=none</txt-record>
 </service>
 </service-group>"""
 
 #TODO XXX FIXME
 #<txt-record>ty=AirPrint Ricoh Aficio MP 6000</txt-record>
 #<txt-record>Binary=T</txt-record>
+#<txt-record>Duplex=T</txt-record>
 #<txt-record>Copies=T</txt-record>
 
 
@@ -98,7 +101,7 @@ DOCUMENT_TYPES = {
 
 class AirPrintGenerate(object):
     def __init__(self, host=None, user=None, port=None, verbose=False,
-        directory=None, prefix='AirPrint-', adminurl=False, descName=False):
+        directory=None, prefix='AirPrint-', adminurl=False):
         self.host = host
         self.user = user
         self.port = port
@@ -106,7 +109,6 @@ class AirPrintGenerate(object):
         self.directory = directory
         self.prefix = prefix
         self.adminurl = adminurl
-        self.descName = descName
 
         if self.user:
             cups.setUser(self.user)
@@ -121,20 +123,16 @@ class AirPrintGenerate(object):
 
         printers = conn.getPrinters()
 
-        for p, v in printers.items():
+        for p, v in list(printers.items()):
             if v['printer-is-shared']:
                 attrs = conn.getPrinterAttributes(p)
-                uri = urlparse(v['printer-uri-supported'])
+                uri = urlparse.urlparse(v['printer-uri-supported'])
 
                 tree = ElementTree()
                 tree.parse(StringIO(XML_TEMPLATE.replace('\n', '').replace('\r', '').replace('\t', '')))
 
                 name = tree.find('name')
-
-                if self.descName:
-                   name.text = '%s' % (v['printer-info'])
-                else:
-                   name.text = 'AirPrint %s @ %%h' % (p)
+                name.text = 'AirPrint %s @ %%h' % (p)
 
                 service = tree.find('service')
 
@@ -168,40 +166,8 @@ class AirPrintGenerate(object):
                 service.append(path)
 
                 desc = Element('txt-record')
-                if self.descName:
-                  desc.text = 'note=%s' % (v['printer-location'])
-                else:
-                  desc.text = 'note=%s' % (v['printer-info'])
+                desc.text = 'note=%s' % (v['printer-info'])
                 service.append(desc)
-
-                if 'color-supported' in attrs and attrs['color-supported'] == True:
-                    color = Element('txt-record')
-                    color.text = 'Color=T'
-                    service.append(color)
-
-                if 'media-default' in attrs and attrs['media-default'] == 'iso_a4_210x297mm':
-                    max_paper = Element('txt-record')
-                    max_paper.text = 'PaperMax=legal-A4'
-                    service.append(max_paper)
-
-                # URF reports printer capabilities for AirPrint
-                # string should contains "DM[123]" to indicate duplex capability
-                if 'urf-supported' in attrs:
-                    urf = Element('txt-record')
-                    delimiter = ','
-                    urf_attr_join_str = delimiter.join(attrs['urf-supported'])
-                    urf.text = 'URF=%s' % (urf_attr_join_str)
-                    service.append(urf)
-
-                if 'sides-supported' in attrs and any(['two-sided' in element for element in attrs['sides-supported']]):
-                    duplex = Element('txt-record')
-                    duplex.text = 'Duplex=T'
-                    service.append(duplex)
-                    # hardcode URF string in case it is not set, see https://wiki.debian.org/CUPSAirPrint
-                    if not 'urf' in locals():
-                        urf = Element('txt-record')
-                        urf.text = 'URF=DM3'
-                        service.append(urf)
 
                 product = Element('txt-record')
                 product.text = 'product=(GPL Ghostscript)'
@@ -288,8 +254,6 @@ if __name__ == '__main__':
         default='AirPrint-')
     parser.add_option('-a', '--admin', action="store_true", dest="adminurl",
         help="Include the printer specified uri as the adminurl")
-    parser.add_option('-x', '--desc', action="store_true", dest="descName",
-        help="Use CUPS description as the printer display name")
 
     (options, args) = parser.parse_args()
 
@@ -310,7 +274,6 @@ if __name__ == '__main__':
         directory=options.directory,
         prefix=options.prefix,
         adminurl=options.adminurl,
-        descName=options.descName
     )
 
     apg.generate()

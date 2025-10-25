@@ -10,6 +10,7 @@ readonly cups_files_cfg=cups-files.conf.tempio
 
 # Avahi paths
 readonly avahi_config_path=/config/avahi
+readonly avahi_services_path=/config/avahi/services
 readonly avahi_templates_path=/config/templates/avahi
 readonly cups_templates_path=/config/templates/cups
 readonly src_avahi_templates_path=/usr/templates/avahi
@@ -57,7 +58,15 @@ if ! bashio::fs.directory_exists "${avahi_config_path}"; then
     bashio::exit.nok \
       'Failed setting permissions on persistent Avahi config folder'
 fi
+# Avahi services  folder
+if ! bashio::fs.directory_exists "${avahi_services_path}"; then
+  mkdir -p "${avahi_services_path}" ||
+    bashio::exit.nok 'Failed to create a persistent Avahi services folder'
 
+  chmod 700 "${avahi_config_path}" ||
+    bashio::exit.nok \
+      'Failed setting permissions on persistent Avahi config folder'
+fi
 # avahi templates folder
 if ! bashio::fs.directory_exists "${avahi_templates_path}"; then
   mkdir -p "${avahi_templates_path}" ||

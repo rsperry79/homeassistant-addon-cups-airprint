@@ -25,6 +25,12 @@ RUN apt update \
         nano \
         gnupg2 \
         inotify-tools \
+        # airprint generate requirements
+        python3 \
+        python3-pip \
+        python3-venv \
+        python3-libxml2 \
+        libcups2-dev \
         # CUPS printing packages
         cups \
         cups-filters \
@@ -32,25 +38,26 @@ RUN apt update \
         colord \
         python3-cups \
         # Network
+        avahi-discover \
         avahi-utils \
-        libnss-mdns \
         dbus \
+        libnss-mdns \
         samba \
         samba-client \
         # Printer Drivers
-        printer-driver-all-enforce \
-        printer-driver-all \
-        printer-driver-splix \
-        printer-driver-brlaser \
-        printer-driver-gutenprint \
-        openprinting-ppds \
+        foomatic-db-compressed-ppds \
         hpijs-ppds \
-        hp-ppd  \
         hplip \
-        printer-driver-foo2zjs \
+        hp-ppd  \
+        openprinting-ppds \
         printer-driver-hpcups \
+        printer-driver-all \
+        printer-driver-all-enforce \
+        printer-driver-brlaser \
         printer-driver-escpr \
-
+        printer-driver-foo2zjs \
+        printer-driver-gutenprint \
+        printer-driver-splix \
     && apt clean -y \
     && rm -rf /var/lib/apt/lists/*
 

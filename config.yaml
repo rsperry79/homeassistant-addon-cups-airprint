@@ -18,7 +18,8 @@ host_dbus: true
 # apparmor: false
 ports:
   631/tcp: 631
-  631/udp: 631
+
+  5353/udp: 5353
 map:
   - type: ssl
     read_only: true

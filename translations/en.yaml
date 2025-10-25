@@ -13,5 +13,5 @@ configuration:
     description: >-
       Do you want to use the host machines Avahi through the DBUS?
 network:
-  631/tcp: For other devices on the local network to print to this server
-  631/udp: For other devices on the local network to print to this server
+  631/tcp: IPP printer port
+  5353/udp: Avahi Advertisements
