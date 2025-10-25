@@ -29,7 +29,6 @@ map:
 
 ingress: true
 ingress_port: 631
-privileged: true
 # ingress_stream: true
 
 watchdog: http://[HOST]:[PORT:631]/printers
