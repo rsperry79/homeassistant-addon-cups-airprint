@@ -33,6 +33,7 @@ RUN apt update \
         libcups2-dev \
         # CUPS printing packages
         cups \
+        cups-bsd \
         cups-filters \
         cups-pdf \
         colord \
