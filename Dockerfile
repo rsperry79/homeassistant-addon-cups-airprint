@@ -70,17 +70,14 @@ RUN cd /tmp \
   && mv cnijfilter2-6.80-1-deb/packages/cnijfilter2_6.80-1_${ARCH}.deb cnijfilter2_6.80-1.deb \
   && apt install ./cnijfilter2_6.80-1.deb
 
-
 COPY rootfs /
 
 # setup airprint scripts
 COPY airprint/ /opt/airprint/
 RUN chmod +x /opt/airprint/printer-update.sh
 
-
 RUN dpkg -i --force-all /drivers/mfc9970cdwlpr-1.1.1-5.i386.deb \
   && dpkg -i --force-all /drivers/mfc9970cdwlpr-1.1.1-5.i386.deb
-
 
 # Add user and disable sudo password checking
 RUN useradd \
