@@ -28,7 +28,6 @@ map:
 ingress: true
 ingress_port: 631
 # ingress_stream: true
-full_access: true
 watchdog: http://[HOST]:[PORT:631]/printers
 schema:
   log_level: list(debug2|debug|info|notice|warn|error|crit|alert|none)?
